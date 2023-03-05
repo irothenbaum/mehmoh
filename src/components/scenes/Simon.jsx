@@ -15,7 +15,7 @@ function Simon() {
   return (
     <div className="simon-game">
       <VertexPolygon
-        count={3}
+        count={7}
         onContactStart={handleVertexTouch}
         activeVertex={selectedV}
       />

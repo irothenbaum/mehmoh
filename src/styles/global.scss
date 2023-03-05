@@ -25,7 +25,9 @@ html, body {
   --text-color: #{colors.$black};
   --active-color: #{colors.$activeColor};
   --vertex-color: #{colors.$mediumDarkGrey};
+
   --vertex-radius: #{constants.$vertexRadius};
+  --vertex-diameter: #{constants.$vertexDiameter};
 }
 
 .theme-dark {

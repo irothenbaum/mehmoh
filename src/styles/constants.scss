@@ -6,7 +6,8 @@ $transition: $transitionSpeed ease-in-out;
 $shadowSmall: 0 0 4px -2px colors.$black;
 $shadowLarge: 0 0 12px -8px colors.$black;
 
-$vertexRadius: 36px;
+$vertexRadius: 3rem;
+$vertexDiameter: 2 * $vertexRadius;
 
 @function neg($val) {
   @return $val * -1

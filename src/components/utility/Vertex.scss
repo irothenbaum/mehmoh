@@ -4,8 +4,8 @@
 
 .vertex {
   @include elements.shadow1();
-  width: var(--vertex-radius);
-  height: var(--vertex-radius);
+  width: var(--vertex-diameter);
+  height: var(--vertex-diameter);
   border-radius: 50%;
   background-color: var(--vertex-color);
   transition: all constants.$transition;
