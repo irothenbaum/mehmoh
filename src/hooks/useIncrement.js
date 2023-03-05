@@ -5,8 +5,18 @@ function useIncrement(startingValue) {
   return {
     value,
     setValue,
-    increment: () => setValue(i => i + 1),
-    decrement: () => setValue(i => i - 1),
+    increment: cb =>
+      setValue(i => {
+        const retVal = i + 1
+        typeof cb === 'function' && cb(retVal)
+        return retVal
+      }),
+    decrement: cb =>
+      setValue(i => {
+        const retVal = i - 1
+        typeof cb === 'function' && cb(retVal)
+        return retVal
+      }),
   }
 }
 

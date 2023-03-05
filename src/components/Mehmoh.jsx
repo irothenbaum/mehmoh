@@ -15,7 +15,7 @@ function Mehmoh(props) {
 
   const Page = SCENE_MAP[scene]
 
-  return <Page />
+  return <Page vertexCount={7} />
 }
 
 export default Mehmoh
