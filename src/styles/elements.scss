@@ -1,0 +1,41 @@
+@use './constants.scss';
+@use './colors.scss';
+
+@mixin hover-cta {
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity constants.$transition;
+  &:hover {
+    opacity: 0.9;
+  }
+  &:active {
+    opacity: 1;
+  }
+}
+
+@mixin ellipsis() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin link-text() {
+  text-decoration: underline;
+  color: colors.$primary;
+  cursor: pointer;
+  transition: color constants.$transition;
+
+  &:hover {
+    color: colors.$lightBlue;
+  }
+}
+
+@mixin disable-text-selection() {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+@mixin shadow1($shadowColor: colors.$shadow-25) {
+  box-shadow: 0 0 8px 0 $shadowColor;
+}

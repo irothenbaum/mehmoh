@@ -1,0 +1,36 @@
+@use "reset.css";
+@use "colors";
+@use "typography";
+@use "layout";
+@use "constants";
+
+
+// UNIVERSAL BOX SIZING
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html, body {
+  // establish 1rem = 14px
+  font-size: 14px;
+  font-family: typography.$fontFamilyRegular;
+  width: 100%;
+  height: 100%;
+  color: colors.$copyColor;
+  background-color: colors.$white;
+}
+
+:root {
+  --background-color: #{colors.$white};
+  --text-color: #{colors.$black};
+  --active-color: #{colors.$activeColor};
+  --vertex-color: #{colors.$mediumDarkGrey};
+  --vertex-radius: #{constants.$vertexRadius};
+}
+
+.theme-dark {
+  --background-color: #{colors.$black};
+  --text-color: #{colors.$white};
+  --active-color: #{colors.$activeColor};
+  --vertex-color: #{colors.$grey};
+}

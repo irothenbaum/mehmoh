@@ -1,0 +1,20 @@
+@use '../../styles/elements';
+@use '../../styles/constants';
+@use '../../styles/colors';
+
+.vertex {
+  @include elements.shadow1();
+  width: var(--vertex-radius);
+  height: var(--vertex-radius);
+  border-radius: 50%;
+  background-color: var(--vertex-color);
+  transition: all constants.$transition;
+
+  &.active {
+    @include elements.shadow1(colors.$activeColor);
+    background-color: var(--active-color);
+  }
+}
+
+
+
