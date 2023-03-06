@@ -21,12 +21,12 @@
 
 @mixin link-text() {
   text-decoration: underline;
-  color: colors.$primary;
+  color: colors.$activeColor;
   cursor: pointer;
   transition: color constants.$transition;
 
   &:hover {
-    color: colors.$lightBlue;
+    color: colors.$white;
   }
 }
 
@@ -38,4 +38,12 @@
 
 @mixin shadow1($shadowColor: colors.$shadow-25) {
   box-shadow: 0 0 8px 0 $shadowColor;
+}
+
+@mixin pageContainer() {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

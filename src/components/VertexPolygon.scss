@@ -2,12 +2,18 @@
 @use '../styles/constants';
 @use '../styles/colors';
 
+$opposite: calc(100% - var(--vertex-diameter));
+$center: calc(100% - var(--vertex-diameter));
+$opposite25: calc(75% - var(--vertex-radius));
+
 .vertex-polygon {
   position: relative;
-  width: calc(5 * var(--vertex-diameter));
-  height: calc(5 * var(--vertex-diameter));
+  max-width: calc(5 * var(--vertex-diameter));
+  width: 100%;
+  padding-top: 100%;
 
   .vertex {
+    transition: all constants.$transition;
     position: absolute;
   }
 
@@ -18,8 +24,8 @@
   */
   &.vp-count-3 {
     .vp-vertex-0 { top: 0; left: calc(50% - var(--vertex-radius)) }
-    .vp-vertex-1 { bottom: 0; right: 0; }
-    .vp-vertex-2 { bottom: 0; left: 0; }
+    .vp-vertex-1 { top: $opposite; left: $opposite; }
+    .vp-vertex-2 { top: $opposite; left: 0; }
   }
 
   /*
@@ -29,9 +35,9 @@
    */
   &.vp-count-4 {
     .vp-vertex-0 { top: 0; left: 0; }
-    .vp-vertex-1 { top: 0; right: 0; }
-    .vp-vertex-2 { bottom: 0; right: 0; }
-    .vp-vertex-3 { bottom: 0; left: 0; }
+    .vp-vertex-1 { top: 0; left: $opposite; }
+    .vp-vertex-2 { top: $opposite; left: $opposite; }
+    .vp-vertex-3 { top: $opposite; left: 0; }
   }
 
   /*
@@ -41,9 +47,9 @@
    */
   &.vp-count-5 {
     .vp-vertex-0 { top: 0; left: calc(50% - var(--vertex-radius)); }
-    .vp-vertex-1 { top: calc(45% - var(--vertex-radius)); right: 0; }
-    .vp-vertex-2 { bottom: 0; right: calc(25% - var(--vertex-radius)); }
-    .vp-vertex-3 { bottom: 0; left: calc(25% - var(--vertex-radius)); }
+    .vp-vertex-1 { top: calc(45% - var(--vertex-radius)); left: $opposite; }
+    .vp-vertex-2 { top: $opposite; right: $opposite25; }
+    .vp-vertex-3 { top: $opposite; left: calc(25% - var(--vertex-radius)); }
     .vp-vertex-4 { top: calc(45% - var(--vertex-radius)); left: 0; }
   }
 
@@ -56,11 +62,19 @@
    */
   &.vp-count-6, &.vp-count-7 {
     .vp-vertex-0 { top: 0; left: calc(25% - var(--vertex-radius)); }
-    .vp-vertex-1 { top: 0; right: calc(25% - var(--vertex-radius)); }
-    .vp-vertex-2 { top: calc(50% - var(--vertex-radius)); right: 0; }
-    .vp-vertex-3 { bottom: 0; right: calc(25% - var(--vertex-radius)); }
-    .vp-vertex-4 { bottom: 0; left: calc(25% - var(--vertex-radius)); }
+    .vp-vertex-1 { top: 0; right: $opposite25; }
+    .vp-vertex-2 { top: calc(50% - var(--vertex-radius)); left: $opposite; }
+    .vp-vertex-3 { top: $opposite; left: $opposite25; }
+    .vp-vertex-4 { top: $opposite; left: calc(25% - var(--vertex-radius)); }
     .vp-vertex-5 { top: calc(50% - var(--vertex-radius)); left: 0; }
     .vp-vertex-6 { top: calc(50% - var(--vertex-radius)); left: calc(50% - var(--vertex-radius)); }
+  }
+
+  &.collapsed {
+    // all go to center when collapsed
+   .vertex {
+     top: calc(50% - var(--vertex-radius));
+     left: calc(50% - var(--vertex-radius));
+   }
   }
 }

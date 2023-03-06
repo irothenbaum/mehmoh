@@ -7,6 +7,7 @@ import {HIGH_SCORE_SIMON} from '../../constants/game'
 import PropTypes from 'prop-types'
 import useArray from '../../hooks/useArray'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
+import RoundTracker from '../RoundTracker'
 
 const CLICK_FEEDBACK_TIMER = 'click-feedback'
 const ROUND_PAUSE_TIMER = 'round-pause'
@@ -16,8 +17,12 @@ const ROUND_PAUSE_DURATION = 3000
 const REVEAL_TIMER = 'reveal-timer'
 const REVEAL_TIMEOUT = 1000
 
+const INTER_ROUND_DURATION = 3000
+const INTER_ROUND_TIMER = 'inter-round'
+
 function Simon(props) {
   const vertexCount = props.vertexCount || 3
+  const [animatingRound, setAnimatingRound] = useState(false)
   const {highScore, recordScore} = useHighScore(HIGH_SCORE_SIMON)
   const {
     array: correctPath,
@@ -26,6 +31,7 @@ function Simon(props) {
   } = useArray([])
   const [canTouch, setCanTouch] = useState(false)
   const [activeVertex, setActiveVertex] = useState(null)
+  const [revealing, setRevealing] = useState(0)
   const {
     value: guessCount,
     increment: markGuess,
@@ -34,49 +40,58 @@ function Simon(props) {
   const {setTimer, isTimerSet, cancelAllTimers} = useDoOnceTimer()
 
   const startNextRound = () => {
-    console.log('STARTING ROUND')
-    // starting a round involves selecting a new correct path vertex number
+    console.log('Round Reset')
     setGuessCount(0)
+    setAnimatingRound(true)
+
+    // starting a round involves selecting a new correct path vertex number
     const prevVert = correctPath[correctPath.length - 1]
     let nextVert = Math.floor(Math.random() * vertexCount)
-    console.log(nextVert, vertexCount)
+    console.log('NEXT TERM:', nextVert, vertexCount)
     if (nextVert === prevVert) {
       nextVert =
-        (nextVert + 1 + Math.floor(Math.random() * vertexCount - 1)) %
+        (nextVert + 1 + Math.floor(Math.random() * (vertexCount - 1))) %
         vertexCount
+      console.log('repicked ' + nextVert)
     }
-    appendCorrectStep(nextVert)
+
+    setTimer(
+      INTER_ROUND_TIMER,
+      () => {
+        console.log('Starting Round')
+        setAnimatingRound(false)
+        setRevealing(-1)
+        appendCorrectStep(nextVert)
+      },
+      INTER_ROUND_DURATION,
+    )
   }
 
   // on Mount, we wait a pause and then start next round
   useEffect(() => {
-    setTimer(ROUND_PAUSE_TIMER, startNextRound, ROUND_PAUSE_DURATION)
+    startNextRound()
     return () => {
       cancelAllTimers()
     }
   }, [])
 
-  // when the correct path changes, we slowly reveal the correct path
   useEffect(() => {
-    console.log(correctPath)
-    let revealing = 0
-
-    const revealNext = () => {
+    if (typeof revealing === 'number') {
       // if we haven't revealed every vertex along the correct path
       if (revealing < correctPath.length) {
         // we shown the next vertex,
-        setActiveVertex(correctPath[revealing++])
+        setActiveVertex(correctPath[revealing])
         // then wait the reveal timeout before recursively invoking revealNext
-        setTimer(REVEAL_TIMER, revealNext, REVEAL_TIMEOUT)
+        setTimer(REVEAL_TIMER, () => setRevealing(p => p + 1), REVEAL_TIMEOUT)
       } else {
         // if we have shown every vertex in the correct path, then it's the player's turn to repeat
         setActiveVertex(null)
         setCanTouch(true)
+        setRevealing(null)
         // round starts here!
       }
     }
-    revealNext()
-  }, [correctPath])
+  }, [revealing])
 
   // we only increment guess count when they guess correctly
   useEffect(() => {
@@ -107,11 +122,21 @@ function Simon(props) {
   }
 
   return (
-    <div className="simon-game">
-      <VertexPolygon
-        count={vertexCount}
-        onContactStart={handleVertexTouch}
-        activeVertex={activeVertex}
+    <div className={`simon-game ${animatingRound && 'round-reset'}`}>
+      <div className="game-container">
+        <VertexPolygon
+          isCollapsed={animatingRound}
+          count={vertexCount}
+          onContactStart={handleVertexTouch}
+          activeVertex={activeVertex}
+        />
+      </div>
+      <RoundTracker
+        total={correctPath.length}
+        showing={
+          typeof revealing === 'number' ? revealing + 1 : correctPath.length
+        }
+        completed={guessCount}
       />
     </div>
   )

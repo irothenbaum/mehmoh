@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
+import './Mehmoh.scss'
 import {SCENE_MENU, SCENE_SIMON, SCENE_MAZE} from '../constants/routes'
 import Simon from './scenes/Simon'
 import Maze from './scenes/Maze'
@@ -11,11 +12,16 @@ const SCENE_MAP = {
 }
 
 function Mehmoh(props) {
+  const container = useRef()
   const [scene, setScene] = useState(SCENE_SIMON)
 
   const Page = SCENE_MAP[scene]
 
-  return <Page vertexCount={7} />
+  return (
+    <div id="mehmoh" ref={container}>
+      <Page vertexCount={4} />
+    </div>
+  )
 }
 
 export default Mehmoh

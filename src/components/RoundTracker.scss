@@ -1,0 +1,31 @@
+@use '../styles/layout';
+@use '../styles/constants';
+@use '../styles/colors';
+@use '../styles/elements';
+
+.round-tracker {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .round-step {
+    display: block;
+    height: layout.$spaceLarge;
+    width: layout.$spaceLarge;
+    border-radius: 2px;
+    margin-right: layout.$spaceSmall;
+    transition: all constants.$transition;
+    opacity: 1;
+    background-color: colors.$midnightBlue;
+
+    &.not-visible {
+      opacity: 0;
+    }
+
+    &.completed {
+      background-color: colors.$activeColor;
+      @include elements.shadow1();
+    }
+  }
+}

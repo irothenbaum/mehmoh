@@ -17,14 +17,15 @@ html, body {
   width: 100%;
   height: 100%;
   color: colors.$copyColor;
-  background-color: colors.$white;
+  background-color: colors.$midnightBlue;
+  overflow: hidden;
 }
 
 :root {
-  --background-color: #{colors.$white};
+  --background-color: #{colors.$backgroundColor};
   --text-color: #{colors.$black};
   --active-color: #{colors.$activeColor};
-  --vertex-color: #{colors.$mediumDarkGrey};
+  --vertex-color: #{colors.$mediumGrey};
 
   --vertex-radius: #{constants.$vertexRadius};
   --vertex-diameter: #{constants.$vertexDiameter};

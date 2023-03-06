@@ -20,7 +20,9 @@ function VertexPolygon(props) {
 
   return (
     <div
-      className={`vertex-polygon vp-count-${props.count} ${props.className}`}>
+      className={`vertex-polygon vp-count-${props.count} ${
+        props.isCollapsed && 'collapsed'
+      } ${props.className || ''}`}>
       {[...new Array(props.count)].map((e, i) => (
         <Vertex
           key={i}
