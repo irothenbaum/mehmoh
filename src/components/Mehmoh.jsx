@@ -19,7 +19,7 @@ function Mehmoh(props) {
 
   return (
     <div id="mehmoh" ref={container}>
-      <Page vertexCount={4} />
+      <Page vertexCount={6} />
     </div>
   )
 }

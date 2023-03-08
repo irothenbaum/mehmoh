@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import './VertexPolygon.scss'
 import PropTypes from 'prop-types'
 import Vertex from './utility/Vertex'
+import {constructClassString} from '../utilities'
 
 function VertexPolygon(props) {
   const [] = useState()
@@ -20,9 +21,12 @@ function VertexPolygon(props) {
 
   return (
     <div
-      className={`vertex-polygon vp-count-${props.count} ${
-        props.isCollapsed && 'collapsed'
-      } ${props.className || ''}`}>
+      className={constructClassString(
+        {collapsed: props.isCollapsed},
+        'vertex-polygon',
+        `vp-count-${props.count}`,
+        props.className,
+      )}>
       {[...new Array(props.count)].map((e, i) => (
         <Vertex
           key={i}

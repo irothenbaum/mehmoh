@@ -11,6 +11,7 @@ import {
   faTimes,
   faCircle,
 } from '@fortawesome/free-solid-svg-icons'
+import {constructClassString} from '../../utilities'
 
 export const CHEVRON_LEFT = faChevronLeft
 export const CHEVRON_RIGHT = faChevronRight
@@ -23,9 +24,14 @@ export const CLOSE = faTimes
 function Icon(props) {
   return (
     <span
-      className={`icon-container ${props.className || ''} ${
-        typeof props.onClick === 'function' ? 'has-click-handler' : ''
-      } ${props.icon === SPINNER ? 'spin' : ''}`}
+      className={constructClassString(
+        {
+          'has-click-handler': typeof props.onClick === 'function',
+          spin: props.icon === SPINNER,
+        },
+        props.className,
+        'icon-container',
+      )}
       onClick={props.onClick}>
       <FontAwesomeIcon icon={props.icon} />
     </span>

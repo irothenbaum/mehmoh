@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import useArray from '../../hooks/useArray'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
 import RoundTracker from '../RoundTracker'
+import {constructClassString} from '../../utilities'
 
 const CLICK_FEEDBACK_TIMER = 'click-feedback'
 const ROUND_PAUSE_TIMER = 'round-pause'
@@ -17,7 +18,7 @@ const WIN_PAUSE_DURATION = 2000 // how long the user waits after a win before th
 const REVEAL_TIMER = 'reveal-timer'
 const REVEAL_TIMEOUT = 1000 // the pace to reveal the next target vertex, should probably be >= CLICK_FEEDBACK
 
-const INTER_ROUND_DURATION = 3000 // how long the user sits in a collapsed state
+const INTER_ROUND_DURATION = 2000 // how long the user sits in a collapsed state
 const INTER_ROUND_TIMER = 'inter-round'
 
 function Simon(props) {
@@ -62,7 +63,7 @@ function Simon(props) {
         setAnimatingRound(false)
         // by setting this negative we effectively multiply the time we wait by REVEAL_TIMEOUT
         // so -2 is waiting an extra (2 * REVEAL_TIMEOUT) before starting to reveal
-        setRevealing(-2)
+        setRevealing(-1)
         appendCorrectStep(nextVert)
       },
       INTER_ROUND_DURATION,
@@ -126,7 +127,11 @@ function Simon(props) {
   const isRevealing = typeof revealing === 'number'
 
   return (
-    <div className={`simon-game ${animatingRound && 'round-reset'}`}>
+    <div
+      className={constructClassString({
+        'simon-game': true,
+        'round-rest': !!animatingRound,
+      })}>
       <div className="game-container">
         <VertexPolygon
           isCollapsed={animatingRound}

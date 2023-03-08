@@ -2,6 +2,7 @@ import React from 'react'
 import './Vertex.scss'
 import PropTypes from 'prop-types'
 import useContact from '../../hooks/useContact'
+import {constructClassString} from '../../utilities'
 
 function Vertex(props) {
   const {contactProps} = useContact({
@@ -10,9 +11,11 @@ function Vertex(props) {
   })
   return (
     <div
-      className={`vertex ${props.isActive ? 'active' : ''} ${
-        props.isSecondary ? 'secondary' : ''
-      } ${props.className || ''}`}
+      className={constructClassString(
+        {active: props.isActive, secondary: props.isSecondary},
+        'vertex',
+        props.className,
+      )}
       {...contactProps}>
       <div className="vertex-inner" />
     </div>

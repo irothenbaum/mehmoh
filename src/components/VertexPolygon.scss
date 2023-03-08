@@ -64,7 +64,7 @@ $opposite25: calc(75% - var(--vertex-radius));
    */
   &.vp-count-6, &.vp-count-7 {
     .vp-vertex-0 { top: 0; left: calc(25% - var(--vertex-radius)); }
-    .vp-vertex-1 { top: 0; right: $opposite25; }
+    .vp-vertex-1 { top: 0; left: $opposite25; }
     .vp-vertex-2 { top: calc(50% - var(--vertex-radius)); left: $opposite; }
     .vp-vertex-3 { top: $opposite; left: $opposite25; }
     .vp-vertex-4 { top: $opposite; left: calc(25% - var(--vertex-radius)); }

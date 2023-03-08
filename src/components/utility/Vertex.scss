@@ -2,7 +2,7 @@
 @use '../../styles/constants';
 @use '../../styles/colors';
 
-$growthTransition: 0.6s ease-out;
+$growthTransition: 0.4s ease-out;
 
 .vertex {
   @include elements.shadow1();
