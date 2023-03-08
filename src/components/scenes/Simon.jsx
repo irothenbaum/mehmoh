@@ -11,13 +11,13 @@ import RoundTracker from '../RoundTracker'
 
 const CLICK_FEEDBACK_TIMER = 'click-feedback'
 const ROUND_PAUSE_TIMER = 'round-pause'
-const CLICK_FEEDBACK_DURATION = 1000
-const ROUND_PAUSE_DURATION = 3000
+const CLICK_FEEDBACK_DURATION = 1000 // how long the vertex glows when interacted
+const WIN_PAUSE_DURATION = 2000 // how long the user waits after a win before the collapse starts
 
 const REVEAL_TIMER = 'reveal-timer'
-const REVEAL_TIMEOUT = 1000
+const REVEAL_TIMEOUT = 1000 // the pace to reveal the next target vertex, should probably be >= CLICK_FEEDBACK
 
-const INTER_ROUND_DURATION = 3000
+const INTER_ROUND_DURATION = 3000 // how long the user sits in a collapsed state
 const INTER_ROUND_TIMER = 'inter-round'
 
 function Simon(props) {
@@ -41,7 +41,6 @@ function Simon(props) {
 
   const startNextRound = () => {
     console.log('Round Reset')
-    setGuessCount(0)
     setAnimatingRound(true)
 
     // starting a round involves selecting a new correct path vertex number
@@ -58,9 +57,12 @@ function Simon(props) {
     setTimer(
       INTER_ROUND_TIMER,
       () => {
+        setGuessCount(0)
         console.log('Starting Round')
         setAnimatingRound(false)
-        setRevealing(-1)
+        // by setting this negative we effectively multiply the time we wait by REVEAL_TIMEOUT
+        // so -2 is waiting an extra (2 * REVEAL_TIMEOUT) before starting to reveal
+        setRevealing(-2)
         appendCorrectStep(nextVert)
       },
       INTER_ROUND_DURATION,
@@ -99,7 +101,7 @@ function Simon(props) {
     if (guessCount > 0 && guessCount === correctPath.length) {
       // ROUND WON!
       setCanTouch(false)
-      setTimer(ROUND_PAUSE_TIMER, startNextRound, ROUND_PAUSE_DURATION)
+      setTimer(ROUND_PAUSE_TIMER, startNextRound, WIN_PAUSE_DURATION)
     }
   }, [guessCount])
 
@@ -121,11 +123,14 @@ function Simon(props) {
     }
   }
 
+  const isRevealing = typeof revealing === 'number'
+
   return (
     <div className={`simon-game ${animatingRound && 'round-reset'}`}>
       <div className="game-container">
         <VertexPolygon
           isCollapsed={animatingRound}
+          isSecondary={isRevealing}
           count={vertexCount}
           onContactStart={handleVertexTouch}
           activeVertex={activeVertex}
@@ -133,10 +138,8 @@ function Simon(props) {
       </div>
       <RoundTracker
         total={correctPath.length}
-        showing={
-          typeof revealing === 'number' ? revealing + 1 : correctPath.length
-        }
-        completed={guessCount}
+        showing={isRevealing ? revealing + 1 : correctPath.length}
+        completed={isRevealing ? null : guessCount}
       />
     </div>
   )

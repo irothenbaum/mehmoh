@@ -9,6 +9,7 @@ import {
   faSpinner,
   faCheck,
   faTimes,
+  faCircle,
 } from '@fortawesome/free-solid-svg-icons'
 
 export const CHEVRON_LEFT = faChevronLeft
@@ -16,6 +17,7 @@ export const CHEVRON_RIGHT = faChevronRight
 export const DOWNLOAD = faDownload
 export const SPINNER = faSpinner
 export const CHECK = faCheck
+export const BULLET = faCircle
 export const CLOSE = faTimes
 
 function Icon(props) {

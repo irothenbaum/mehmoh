@@ -2,18 +2,28 @@
 @use '../../styles/constants';
 @use '../../styles/colors';
 
+$growthTransition: 0.6s ease-out;
+
 .vertex {
   @include elements.shadow1();
   width: var(--vertex-diameter);
   height: var(--vertex-diameter);
   border-radius: 50%;
   background-color: var(--vertex-color);
-  transition: all constants.$transition;
+  transition:
+          all $growthTransition,
+          background-color constants.$transition;
 
   &.active {
     @include elements.shadow1(colors.$activeColor);
     background-color: var(--active-color);
+
+    &.secondary {
+      @include elements.shadow1(colors.$secondaryColor);
+      background-color: var(--secondary-color);
+    }
   }
+
 }
 
 

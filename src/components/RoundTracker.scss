@@ -2,6 +2,9 @@
 @use '../styles/constants';
 @use '../styles/colors';
 @use '../styles/elements';
+@use '../styles/typography';
+
+$blockDimension: 3rem;
 
 .round-tracker {
   width: 100%;
@@ -11,19 +14,32 @@
 
   .round-step {
     display: block;
-    height: layout.$spaceLarge;
-    width: layout.$spaceLarge;
-    border-radius: 2px;
+    height: $blockDimension;
+    width: $blockDimension;
+    text-align: center;
+    border-radius: layout.$borderRadiusSmall;
     margin-right: layout.$spaceSmall;
-    transition: all constants.$transition;
+    transition: opacity constants.$transition;
     opacity: 1;
     background-color: colors.$midnightBlue;
+    font-size: typography.$fontSize4;
 
     &.not-visible {
       opacity: 0;
     }
 
+    &.is-tip {
+      @include elements.shadow1(colors.$activeColor);
+    }
+
+    &.revealed {
+      background-color: colors.$secondaryColor;
+      padding-top: 0.5rem;
+      @include elements.shadow1();
+    }
+
     &.completed {
+      font-size: typography.$fontSize1;
       background-color: colors.$activeColor;
       @include elements.shadow1();
     }

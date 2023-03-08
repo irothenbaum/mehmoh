@@ -1,6 +1,9 @@
 @use '../styles/elements';
 @use '../styles/constants';
 @use '../styles/colors';
+@use '../styles/layout';
+
+$collapsedDimension: layout.$spaceNormal;
 
 $opposite: calc(100% - var(--vertex-diameter));
 $center: calc(100% - var(--vertex-diameter));
@@ -13,7 +16,6 @@ $opposite25: calc(75% - var(--vertex-radius));
   padding-top: 100%;
 
   .vertex {
-    transition: all constants.$transition;
     position: absolute;
   }
 
@@ -73,8 +75,11 @@ $opposite25: calc(75% - var(--vertex-radius));
   &.collapsed {
     // all go to center when collapsed
    .vertex {
-     top: calc(50% - var(--vertex-radius));
-     left: calc(50% - var(--vertex-radius));
+     top: calc(50% - #{$collapsedDimension / 2 });
+     left: calc(50% - #{$collapsedDimension / 2 });
+     height: $collapsedDimension;
+     width: $collapsedDimension;
+     box-shadow: none;
    }
   }
 }

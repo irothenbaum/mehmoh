@@ -1,7 +1,8 @@
 @use './colors';
 
 $transitionSpeed: 0.2s;
-$transition: $transitionSpeed ease-in-out;
+$transitionEasing: ease-in-out;
+$transition: $transitionSpeed $transitionEasing;
 
 $shadowSmall: 0 0 4px -2px colors.$black;
 $shadowLarge: 0 0 12px -8px colors.$black;

@@ -28,6 +28,7 @@ function VertexPolygon(props) {
           key={i}
           className={`vp-vertex-${i}`}
           isActive={i === props.activeVertex}
+          isSecondary={props.isSecondary}
           onContactStart={() => handleContactStart(i)}
           onContactEnd={() => handleContactEnd(i)}
         />
@@ -39,6 +40,7 @@ function VertexPolygon(props) {
 VertexPolygon.propTypes = {
   count: PropTypes.number.isRequired,
   activeVertex: PropTypes.number,
+  isSecondary: PropTypes.bool,
   isCollapsed: PropTypes.bool,
   className: PropTypes.string,
   onContactStart: PropTypes.func,

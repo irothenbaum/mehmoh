@@ -11,8 +11,8 @@ function Vertex(props) {
   return (
     <div
       className={`vertex ${props.isActive ? 'active' : ''} ${
-        props.className || ''
-      }`}
+        props.isSecondary ? 'secondary' : ''
+      } ${props.className || ''}`}
       {...contactProps}>
       <div className="vertex-inner" />
     </div>
@@ -21,6 +21,7 @@ function Vertex(props) {
 
 Vertex.propTypes = {
   isActive: PropTypes.bool,
+  isSecondary: PropTypes.bool,
   onContactStart: PropTypes.func,
   onContactEnd: PropTypes.func,
   className: PropTypes.string,
