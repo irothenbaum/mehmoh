@@ -8,14 +8,34 @@ $blockDimension: 3em;
 
 .round-tracker {
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   transition: transform constants.$transition;
   transition-delay: 0.5s;
 
   &.hidden {
     transform: translateY(150%);
+  }
+
+  .round-line {
+    margin: layout.$spaceSmall 0;
+    background-color: colors.$midnightBlue;
+    height: 0.4em;
+    animation: grow 0.2s linear;
+    width: 100%;
+    transition: height constants.$growthTransition;
+
+    &.revealed {
+      background-color: colors.$secondaryColor;
+    }
+
+    &.completed {
+      background-color: colors.$activeColor;
+    }
+  }
+
+  .round-step-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .round-step {
@@ -51,5 +71,15 @@ $blockDimension: 3em;
         font-size: typography.$fontSize1;
       }
     }
+  }
+}
+
+
+@keyframes grow {
+  from {
+    height: 0;
+  }
+  to {
+    height: 0.4em;
   }
 }

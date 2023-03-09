@@ -26,7 +26,7 @@ function Simon(props) {
     array: correctPath,
     append: appendCorrectStep,
     resetArray: resetCorrectSteps,
-  } = useArray([])
+  } = useArray([0, 1, 2, 0, 1, 2])
   const [canTouch, setCanTouch] = useState(false)
   const [activeVertex, setActiveVertex] = useState(null)
   const [isRevealing, setIsRevealing] = useState(false)
@@ -77,6 +77,7 @@ function Simon(props) {
       setTimer(
         'post-reveal-pause',
         () => {
+          console.log(correctPath)
           setActiveVertex(null)
           setCanTouch(true)
           setIsRevealing(false)
