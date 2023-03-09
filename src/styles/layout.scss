@@ -1,55 +1,30 @@
-$spaceExtraLarge: 4rem;
-$spaceLarge: 2rem;
-$spaceMediumLarge: 1.5rem;
-$spaceNormal: 1rem;
-$spaceSmall: 0.5rem;
-$spaceExtraSmall: 0.25rem;
+$spaceExtraLarge: 4em;
+$spaceLarge: 2em;
+$spaceMediumLarge: 1.5em;
+$spaceNormal: 1em;
+$spaceSmall: 0.5em;
+$spaceExtraSmall: 0.25em;
 
 $screenSmallMin: 0px;
-$screenSmallMax: 600px;
+$screenSmallMax: 800px;
 $screenMediumMin: 601px;
 $screenMediumMax: 1024px;
 $screenLargeMin: 1025px;
 $screenLargeMax: 1440px;
 
-$contentWidth: $screenLargeMax;
-
-$borderRadiusExtraLarge: 2.1rem;
-$borderRadiusLarge: 1.3rem;
-$borderRadius: 0.7rem;
-$borderRadiusSmall: 0.36rem;
-
-@mixin large-and-below {
-  @media screen and (max-width: $screenLargeMax) {
-    @content;
-  }
-}
+$borderRadiusLarge: 1em;
+$borderRadius: 0.5em;
+$borderRadiusSmall: 0.2em;
 
 @mixin large-and-up {
-  @media screen and (min-width: $screenLargeMin) {
-    @content;
-  }
-}
-
-@mixin medium-and-below {
-  @media screen and (max-width: $screenMediumMax) {
+  @media screen and (min-height: $screenLargeMin) {
     @content;
   }
 }
 
 @mixin small-and-below {
-  @media screen and (max-width: $screenSmallMax) {
+  @media screen and (max-height: $screenSmallMax) {
     @content;
   }
 }
 
-@mixin flex-row($breakPoint: $screenMediumMax) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-
-  @media screen and (max-width: $breakPoint) {
-    flex-direction: column;
-  }
-}

@@ -20,10 +20,10 @@
 
   .round-tracker {
     position: absolute;
-    bottom: layout.$spaceNormal;
-    left: layout.$spaceNormal;
+    bottom: 0;
+    left: 0;
+    padding: layout.$spaceNormal;
     width: 100%;
-    transition: all constants.$transition;
   }
 
   &.round-reset {

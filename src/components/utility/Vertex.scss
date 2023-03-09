@@ -2,8 +2,6 @@
 @use '../../styles/constants';
 @use '../../styles/colors';
 
-$growthTransition: 0.4s ease-out;
-
 .vertex {
   @include elements.shadow1();
   width: var(--vertex-diameter);
@@ -11,7 +9,7 @@ $growthTransition: 0.4s ease-out;
   border-radius: 50%;
   background-color: var(--vertex-color);
   transition:
-          all $growthTransition,
+          all constants.$growthTransition,
           background-color constants.$transition;
 
   &.active {

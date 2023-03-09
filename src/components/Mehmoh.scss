@@ -1,6 +1,9 @@
 #mehmoh {
   height: 100%;
+  width: 100%;
   max-width: 50vh;
+  max-height: 200vw;
   margin: 0 auto;
   background-color: var(--background-color);
+  overflow: hidden;
 }

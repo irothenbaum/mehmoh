@@ -1,12 +1,10 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './VertexPolygon.scss'
 import PropTypes from 'prop-types'
 import Vertex from './utility/Vertex'
 import {constructClassString} from '../utilities'
 
 function VertexPolygon(props) {
-  const [] = useState()
-
   const handleContactStart = i => {
     return typeof props.onContactStart === 'function'
       ? props.onContactStart(i)
@@ -22,7 +20,9 @@ function VertexPolygon(props) {
   return (
     <div
       className={constructClassString(
-        {collapsed: props.isCollapsed},
+        {
+          collapsed: props.isCollapsed,
+        },
         'vertex-polygon',
         `vp-count-${props.count}`,
         props.className,

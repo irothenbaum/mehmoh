@@ -2,9 +2,6 @@
 @use '../../styles/elements';
 
 .icon-container {
-  display: inline-block;
-  padding: layout.$spaceSmall;
-
   &.has-click-handler {
     @include elements.hover-cta();
   }
@@ -14,11 +11,3 @@
   }
 }
 
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
-  }
-}

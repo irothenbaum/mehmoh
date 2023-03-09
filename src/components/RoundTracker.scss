@@ -4,21 +4,27 @@
 @use '../styles/elements';
 @use '../styles/typography';
 
-$blockDimension: 3rem;
+$blockDimension: 3em;
 
 .round-tracker {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  transition: transform constants.$transition;
+  transition-delay: 0.5s;
+
+  &.hidden {
+    transform: translateY(150%);
+  }
 
   .round-step {
     display: block;
     height: $blockDimension;
     width: $blockDimension;
+    line-height: $blockDimension;
     text-align: center;
     border-radius: layout.$borderRadiusSmall;
-    margin-right: layout.$spaceSmall;
     transition: opacity constants.$transition;
     opacity: 1;
     background-color: colors.$midnightBlue;
@@ -34,14 +40,16 @@ $blockDimension: 3rem;
 
     &.revealed {
       background-color: colors.$secondaryColor;
-      padding-top: 0.5rem;
       @include elements.shadow1();
     }
 
     &.completed {
-      font-size: typography.$fontSize1;
       background-color: colors.$activeColor;
       @include elements.shadow1();
+
+      .icon-container {
+        font-size: typography.$fontSize1;
+      }
     }
   }
 }

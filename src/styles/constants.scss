@@ -10,6 +10,8 @@ $shadowLarge: 0 0 12px -8px colors.$black;
 $vertexRadius: 2.4rem;
 $vertexDiameter: 2 * $vertexRadius;
 
+$growthTransition: 0.4s ease-out;
+
 @function neg($val) {
   @return $val * -1
 }

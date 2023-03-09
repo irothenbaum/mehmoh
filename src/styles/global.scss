@@ -3,6 +3,7 @@
 @use "typography";
 @use "layout";
 @use "constants";
+@use "animations";
 
 
 // UNIVERSAL BOX SIZING
@@ -11,14 +12,22 @@
 }
 
 html, body {
-  // establish 1rem = 14px
-  font-size: 14px;
+  font-size: 16px;
   font-family: typography.$fontFamilyRegular;
   width: 100%;
   height: 100%;
   color: colors.$copyColor;
   background-color: colors.$midnightBlue;
   overflow: hidden;
+
+  @include layout.large-and-up() {
+    font-size: 18px;
+  }
+
+  @include layout.small-and-below() {
+    font-size: 14px;
+
+  }
 }
 
 :root {

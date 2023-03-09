@@ -3,23 +3,20 @@ import './Simon.scss'
 import useIncrement from '../../hooks/useIncrement'
 import VertexPolygon from '../VertexPolygon'
 import useHighScore from '../../hooks/useHighScore'
-import {HIGH_SCORE_SIMON} from '../../constants/game'
+import {
+  HIGH_SCORE_SIMON,
+  CLICK_FEEDBACK_TIMER,
+  CLICK_FEEDBACK_DURATION,
+  ROUND_PAUSE_TIMER,
+  WIN_PAUSE_DURATION,
+  INTER_ROUND_DURATION,
+  INTER_ROUND_TIMER,
+} from '../../constants/game'
 import PropTypes from 'prop-types'
 import useArray from '../../hooks/useArray'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
 import RoundTracker from '../RoundTracker'
 import {constructClassString} from '../../utilities'
-
-const CLICK_FEEDBACK_TIMER = 'click-feedback'
-const ROUND_PAUSE_TIMER = 'round-pause'
-const CLICK_FEEDBACK_DURATION = 1000 // how long the vertex glows when interacted
-const WIN_PAUSE_DURATION = 2000 // how long the user waits after a win before the collapse starts
-
-const REVEAL_TIMER = 'reveal-timer'
-const REVEAL_TIMEOUT = 1000 // the pace to reveal the next target vertex, should probably be >= CLICK_FEEDBACK
-
-const INTER_ROUND_DURATION = 2000 // how long the user sits in a collapsed state
-const INTER_ROUND_TIMER = 'inter-round'
 
 function Simon(props) {
   const vertexCount = props.vertexCount || 3
@@ -32,38 +29,33 @@ function Simon(props) {
   } = useArray([])
   const [canTouch, setCanTouch] = useState(false)
   const [activeVertex, setActiveVertex] = useState(null)
-  const [revealing, setRevealing] = useState(0)
+  const [isRevealing, setIsRevealing] = useState(false)
   const {
     value: guessCount,
     increment: markGuess,
     setValue: setGuessCount,
   } = useIncrement(0)
-  const {setTimer, isTimerSet, cancelAllTimers} = useDoOnceTimer()
+  const {setTimer, cancelAllTimers} = useDoOnceTimer()
 
   const startNextRound = () => {
-    console.log('Round Reset')
+    console.log('Starting next round')
     setAnimatingRound(true)
 
     // starting a round involves selecting a new correct path vertex number
     const prevVert = correctPath[correctPath.length - 1]
     let nextVert = Math.floor(Math.random() * vertexCount)
-    console.log('NEXT TERM:', nextVert, vertexCount)
     if (nextVert === prevVert) {
       nextVert =
         (nextVert + 1 + Math.floor(Math.random() * (vertexCount - 1))) %
         vertexCount
-      console.log('repicked ' + nextVert)
     }
 
     setTimer(
       INTER_ROUND_TIMER,
       () => {
         setGuessCount(0)
-        console.log('Starting Round')
         setAnimatingRound(false)
-        // by setting this negative we effectively multiply the time we wait by REVEAL_TIMEOUT
-        // so -2 is waiting an extra (2 * REVEAL_TIMEOUT) before starting to reveal
-        setRevealing(-1)
+        setIsRevealing(true)
         appendCorrectStep(nextVert)
       },
       INTER_ROUND_DURATION,
@@ -78,23 +70,21 @@ function Simon(props) {
     }
   }, [])
 
-  useEffect(() => {
-    if (typeof revealing === 'number') {
-      // if we haven't revealed every vertex along the correct path
-      if (revealing < correctPath.length) {
-        // we shown the next vertex,
-        setActiveVertex(correctPath[revealing])
-        // then wait the reveal timeout before recursively invoking revealNext
-        setTimer(REVEAL_TIMER, () => setRevealing(p => p + 1), REVEAL_TIMEOUT)
-      } else {
-        // if we have shown every vertex in the correct path, then it's the player's turn to repeat
-        setActiveVertex(null)
-        setCanTouch(true)
-        setRevealing(null)
-        // round starts here!
-      }
+  const onShowNext = (index, isDone) => {
+    setActiveVertex(correctPath[index])
+
+    if (isDone) {
+      setTimer(
+        'post-reveal-pause',
+        () => {
+          setActiveVertex(null)
+          setCanTouch(true)
+          setIsRevealing(false)
+        },
+        1000, // wait 1 second after the last vertex is shown before we let the user start
+      )
     }
-  }, [revealing])
+  }
 
   // we only increment guess count when they guess correctly
   useEffect(() => {
@@ -124,8 +114,6 @@ function Simon(props) {
     }
   }
 
-  const isRevealing = typeof revealing === 'number'
-
   return (
     <div
       className={constructClassString({
@@ -142,9 +130,11 @@ function Simon(props) {
         />
       </div>
       <RoundTracker
+        isHidden={!!animatingRound}
+        isRevealing={isRevealing}
         total={correctPath.length}
-        showing={isRevealing ? revealing + 1 : correctPath.length}
-        completed={isRevealing ? null : guessCount}
+        onShowNext={onShowNext}
+        completed={guessCount}
       />
     </div>
   )

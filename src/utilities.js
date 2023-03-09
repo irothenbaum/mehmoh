@@ -10,3 +10,11 @@ export function constructClassString(conditions, ...others) {
     .concat(others.filter(o => !!o))
     .join(' ')
 }
+
+/**
+ * @param {number?} length
+ * @return {string}
+ */
+export function getRandomString(length = 30) {
+  return [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
+}

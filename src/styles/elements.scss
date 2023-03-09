@@ -19,17 +19,6 @@
   text-overflow: ellipsis;
 }
 
-@mixin link-text() {
-  text-decoration: underline;
-  color: colors.$activeColor;
-  cursor: pointer;
-  transition: color constants.$transition;
-
-  &:hover {
-    color: colors.$white;
-  }
-}
-
 @mixin disable-text-selection() {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
