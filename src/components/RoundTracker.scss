@@ -40,9 +40,9 @@ $blockDimension: 3em;
 
   .round-step {
     display: block;
-    height: $blockDimension;
+    height: $blockDimension / 2;
     width: $blockDimension;
-    line-height: $blockDimension;
+    line-height: $blockDimension / 2;
     text-align: center;
     border-radius: layout.$borderRadiusSmall;
     opacity: 1;
@@ -66,10 +66,6 @@ $blockDimension: 3em;
     &.completed {
       background-color: colors.$activeColor;
       @include elements.shadow1();
-
-      .icon-container {
-        font-size: typography.$fontSize1;
-      }
     }
   }
 }

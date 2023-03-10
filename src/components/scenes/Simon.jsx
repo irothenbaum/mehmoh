@@ -26,7 +26,7 @@ function Simon(props) {
     array: correctPath,
     append: appendCorrectStep,
     resetArray: resetCorrectSteps,
-  } = useArray([0, 1, 2, 0, 1, 2])
+  } = useArray([])
   const [canTouch, setCanTouch] = useState(false)
   const [activeVertex, setActiveVertex] = useState(null)
   const [isRevealing, setIsRevealing] = useState(false)

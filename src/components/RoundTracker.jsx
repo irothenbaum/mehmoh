@@ -10,7 +10,7 @@ const DEFAULT_BLOCKS_COUNT = 1
 
 function RoundTracker(props) {
   const [showing, setShowing] = useState(-5)
-  const [blocksPerLine, setBlocksPerLine] = useState(3)
+  const [blocksPerLine, setBlocksPerLine] = useState(DEFAULT_BLOCKS_COUNT)
   const {setTimer} = useDoOnceTimer()
 
   // if the component has been set to revealing state
@@ -64,18 +64,23 @@ function RoundTracker(props) {
     linesBelow = parseInt((showing - 1) / blocksPerLine)
     blocksToDraw = showing % blocksPerLine
   } else {
-    linesBelow = parseInt(props.completed / blocksPerLine)
-    linesAbove = parseInt((props.total - props.completed) / blocksPerLine)
-    blocksToDraw = Math.min(
-      props.completed < props.total - blocksPerLine
-        ? blocksPerLine
-        : props.total % blocksPerLine,
+    // we subtract 1 because the line should appear AFTER the row is full
+    linesBelow = parseInt((props.completed - 1) / blocksPerLine)
+    linesAbove = parseInt(
+      (props.total - 1 - linesBelow * blocksPerLine) / blocksPerLine,
     )
+    blocksToDraw =
+      linesBelow * blocksPerLine < props.total - blocksPerLine
+        ? blocksPerLine
+        : props.total % blocksPerLine
   }
 
   if (showing > 0 && blocksToDraw === 0) {
     blocksToDraw = blocksPerLine
   }
+
+  linesBelow = Math.max(linesBelow, 0)
+  linesAbove = Math.max(linesAbove, 0)
 
   const keyCounter = linesBelow * blocksPerLine
 
