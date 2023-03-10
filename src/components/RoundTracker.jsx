@@ -11,7 +11,6 @@ const DEFAULT_BLOCKS_COUNT = 1
 function RoundTracker(props) {
   const [showing, setShowing] = useState(-5)
   const [blocksPerLine, setBlocksPerLine] = useState(3)
-  const [lineCount, setLineCount] = useState(0)
   const {setTimer} = useDoOnceTimer()
 
   // if the component has been set to revealing state
@@ -22,16 +21,8 @@ function RoundTracker(props) {
 
     if (props.isRevealing) {
       setShowing(0)
-      setLineCount(0)
     }
   }, [props.isRevealing])
-
-  const checkForRowComplete = blockNumberDrawn => {
-    // we've just completed a row
-    if (blockNumberDrawn % blocksPerLine === 0) {
-      setLineCount(c => c + 1)
-    }
-  }
 
   useEffect(() => {
     if (typeof showing !== 'number') {
@@ -42,8 +33,6 @@ function RoundTracker(props) {
     if (showing > 0) {
       // report that we're showing the next
       props.onShowNext(showing - 1, isDoneShowing)
-
-      checkForRowComplete(showing)
     }
 
     // if we haven't revealed every block
@@ -64,22 +53,31 @@ function RoundTracker(props) {
 
   const isRevealing = props.isRevealing && showing >= 0
 
-  const linesBelow = isRevealing
-    ? parseInt(showing / blocksPerLine)
-    : parseInt(props.completed / blocksPerLine)
-  const linesAbove = isRevealing
-    ? 0
-    : parseInt((props.total - props.completed) / blocksPerLine)
+  let linesBelow
+  let linesAbove
+  let blocksToDraw
 
-  let blocksToDraw = showing % blocksPerLine
+  if (isRevealing) {
+    linesAbove = 0 // there are never any lines above when we're revealing
+    // due to the fade in delay, the new line is seeming to appear too son.
+    // So I'm doing -1 to make it seems to appear at a better time
+    linesBelow = parseInt((showing - 1) / blocksPerLine)
+    blocksToDraw = showing % blocksPerLine
+  } else {
+    linesBelow = parseInt(props.completed / blocksPerLine)
+    linesAbove = parseInt((props.total - props.completed) / blocksPerLine)
+    blocksToDraw = Math.min(
+      props.completed < props.total - blocksPerLine
+        ? blocksPerLine
+        : props.total % blocksPerLine,
+    )
+  }
+
   if (showing > 0 && blocksToDraw === 0) {
     blocksToDraw = blocksPerLine
   }
-  const keyCounter = linesBelow * blocksPerLine
 
-  console.log(
-    `Revealing: ${props.isRevealing} / ${isRevealing}, completed: ${props.completed}, showing: ${showing}, above: ${linesAbove}, below: ${linesBelow}`,
-  )
+  const keyCounter = linesBelow * blocksPerLine
 
   return (
     <div

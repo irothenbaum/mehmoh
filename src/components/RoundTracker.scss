@@ -45,7 +45,6 @@ $blockDimension: 3em;
     line-height: $blockDimension;
     text-align: center;
     border-radius: layout.$borderRadiusSmall;
-    transition: opacity constants.$transition;
     opacity: 1;
     background-color: colors.$midnightBlue;
     font-size: typography.$fontSize4;
@@ -59,6 +58,7 @@ $blockDimension: 3em;
     }
 
     &.revealed {
+      transition: opacity constants.$transition;
       background-color: colors.$secondaryColor;
       @include elements.shadow1();
     }
