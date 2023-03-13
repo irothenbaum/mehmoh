@@ -1,0 +1,25 @@
+@use '../styles/layout';
+@use '../styles/constants';
+@use '../styles/colors';
+@use '../styles/elements';
+@use '../styles/typography';
+
+.score {
+  font-family: typography.$fontFamilyLight;
+  position: absolute;
+  top: layout.$spaceSmall;
+  left: 0;
+  width:100%;
+  font-size: 6rem;
+  text-align: center;
+  color: colors.$copyColor;
+  transition: color constants.$transition;
+
+  &.ticking-up {
+    color: colors.$activeColor;
+  }
+
+  &.ticking-down {
+    color: colors.$secondaryColor;
+  }
+}

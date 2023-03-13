@@ -5,6 +5,7 @@
 @use '../styles/typography';
 
 $blockDimension: 3em;
+$roundLineHeight: 0.4em;
 
 .round-tracker {
   width: 100%;
@@ -18,7 +19,7 @@ $blockDimension: 3em;
   .round-line {
     margin: layout.$spaceSmall 0;
     background-color: colors.$midnightBlue;
-    height: 0.4em;
+    height: $roundLineHeight;
     animation: grow 0.2s linear;
     width: 100%;
     transition: height constants.$growthTransition;
@@ -48,6 +49,20 @@ $blockDimension: 3em;
     opacity: 1;
     background-color: colors.$midnightBlue;
     font-size: typography.$fontSize4;
+    position: relative;
+
+    &:before {
+      visibility: hidden;
+      content: '+1';
+      position: absolute;
+      font-size: typography.$fontSize3;
+      top: 0;
+      left: 0;
+      width: 100%;
+      color: colors.$activeColor;
+      opacity: 1;
+      font-family: typography.$fontFamilyBold;
+    }
 
     &.not-visible {
       opacity: 0;
@@ -60,14 +75,30 @@ $blockDimension: 3em;
     &.revealed {
       transition: opacity constants.$transition;
       background-color: colors.$secondaryColor;
+      color: colors.$nearBlack;
       @include elements.shadow1();
     }
 
     &.completed {
       background-color: colors.$activeColor;
       @include elements.shadow1();
+
+      &:before {
+        visibility: visible;
+        top: -100%;
+        transition: top constants.$transition;
+        animation: disappear 1s constants.$transitionEasing forwards;
+      }
     }
   }
+
+  &.point-value-2 .round-step:before { content: '+2'; }
+  &.point-value-3 .round-step:before { content: '+3'; }
+  &.point-value-4 .round-step:before { content: '+4'; }
+  &.point-value-5 .round-step:before { content: '+5'; }
+  &.point-value-6 .round-step:before { content: '+6'; }
+  &.point-value-7 .round-step:before { content: '+7'; }
+  &.point-value-8 .round-step:before { content: '+8'; }
 }
 
 
@@ -76,6 +107,21 @@ $blockDimension: 3em;
     height: 0;
   }
   to {
-    height: 0.4em;
+    height: $roundLineHeight;
+  }
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  51% {
+    opacity: 0.5;
+  }
+  100%{
+  opacity: 0;
   }
 }

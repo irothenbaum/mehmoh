@@ -17,9 +17,10 @@ import useArray from '../../hooks/useArray'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
 import RoundTracker from '../RoundTracker'
 import {constructClassString} from '../../utilities'
+import Score from '../Score'
 
 function Simon(props) {
-  const vertexCount = props.vertexCount || 3
+  const vertexCount = props.vertexCount || 6
   const [animatingRound, setAnimatingRound] = useState(false)
   const {highScore, recordScore} = useHighScore(HIGH_SCORE_SIMON)
   const {
@@ -36,6 +37,7 @@ function Simon(props) {
     setValue: setGuessCount,
   } = useIncrement(0)
   const {setTimer, cancelAllTimers} = useDoOnceTimer()
+  const [score, setScore] = useState(0)
 
   const startNextRound = () => {
     console.log('Starting next round')
@@ -77,9 +79,9 @@ function Simon(props) {
       setTimer(
         'post-reveal-pause',
         () => {
-          console.log(correctPath)
           setActiveVertex(null)
           setCanTouch(true)
+          console.log(correctPath)
           setIsRevealing(false)
         },
         1000, // wait 1 second after the last vertex is shown before we let the user start
@@ -110,7 +112,10 @@ function Simon(props) {
         CLICK_FEEDBACK_DURATION,
       )
       markGuess()
+      // vertexCount is our pointValue
+      setScore(s => s + props.vertexCount)
     } else {
+      // TODO: How do we actually handle this?
       window.alert('WRONG!')
     }
   }
@@ -121,6 +126,7 @@ function Simon(props) {
         'simon-game': true,
         'round-rest': !!animatingRound,
       })}>
+      <Score score={score} />
       <div className="game-container">
         <VertexPolygon
           isCollapsed={animatingRound}
@@ -136,6 +142,8 @@ function Simon(props) {
         total={correctPath.length}
         onShowNext={onShowNext}
         completed={guessCount}
+        // vertexCount is our pointValue
+        pointValue={props.vertexCount}
       />
     </div>
   )

@@ -1,33 +1,27 @@
 $fontFamilyRegular: 'regular';
 $fontFamilyBold: 'bold';
 $fontFamilyLight: 'light';
-$fontFamilyItalic: 'regular-italic';
 
 @font-face {
   font-family: $fontFamilyBold;
-  src: url('/public/fonts/OpenSans-Bold.ttf');
+  src: url('/public/fonts/Montserrat-ExtraBold.ttf');
 }
 
 @font-face {
   font-family: $fontFamilyRegular;
-  src: url('/public/fonts/OpenSans-Regular.ttf');
+  src: url('/public/fonts/Montserrat-Medium.ttf');
 }
 
 @font-face {
   font-family: $fontFamilyLight;
-  src: url('/public/fonts/OpenSans-Light.ttf');
-}
-
-@font-face {
-  font-family: $fontFamilyItalic;
-  src: url('/public/fonts/OpenSans-Italic.ttf');
+  src: url('/public/fonts/Montserrat-Light.ttf');
 }
 
 $fontSize1: 2rem;
 $fontSize2: 1.4rem;
 $fontSize3: 1.2rem;
 $fontSize4: 1rem;
-$fontSize5: 0.8rem;
+$fontSize5: 0.6rem;
 
 
 // some convenient aliases

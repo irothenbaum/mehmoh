@@ -89,6 +89,7 @@ function RoundTracker(props) {
       className={constructClassString(
         {hidden: props.isHidden || showing < 0},
         'round-tracker',
+        `point-value-${props.pointValue || 1}`,
         props.className,
       )}>
       {[...new Array(linesAbove)].map((e, i) => (
@@ -160,6 +161,7 @@ RoundTracker.propTypes = {
   // showing: PropTypes.number,
   completed: PropTypes.number,
   className: PropTypes.string,
+  pointValue: PropTypes.number,
 }
 
 export default RoundTracker
