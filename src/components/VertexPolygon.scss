@@ -10,12 +10,15 @@ $center: calc(100% - var(--vertex-diameter));
 $opposite25: calc(75% - var(--vertex-radius));
 
 .vertex-polygon {
-  position: relative;
   max-width: calc(5 * var(--vertex-diameter));
   width: 100%;
-  padding-top: 100%;
 
-  animation: rotation2 constants.$growthTransition;
+  .vertex-polygon-inner {
+    position: relative;
+    padding-top: 100%;
+    width: 100%;
+    animation: rotation2 constants.$growthTransition;
+  }
 
   .vertex {
     position: absolute;
@@ -52,7 +55,7 @@ $opposite25: calc(75% - var(--vertex-radius));
   &.vp-count-5 {
     .vp-vertex-0 { top: 0; left: calc(50% - var(--vertex-radius)); }
     .vp-vertex-1 { top: calc(45% - var(--vertex-radius)); left: $opposite; }
-    .vp-vertex-2 { top: $opposite; right: $opposite25; }
+    .vp-vertex-2 { top: $opposite; left: $opposite25; }
     .vp-vertex-3 { top: $opposite; left: calc(25% - var(--vertex-radius)); }
     .vp-vertex-4 { top: calc(45% - var(--vertex-radius)); left: 0; }
   }
@@ -64,7 +67,7 @@ $opposite25: calc(75% - var(--vertex-radius));
 
     4     3
    */
-  &.vp-count-6, &.vp-count-7 {
+  &.vp-count-6, &.vp-count-7, &.vp-count-8 {
     .vp-vertex-0 { top: 0; left: calc(25% - var(--vertex-radius)); }
     .vp-vertex-1 { top: 0; left: $opposite25; }
     .vp-vertex-2 { top: calc(50% - var(--vertex-radius)); left: $opposite; }
@@ -74,8 +77,16 @@ $opposite25: calc(75% - var(--vertex-radius));
     .vp-vertex-6 { top: calc(50% - var(--vertex-radius)); left: calc(50% - var(--vertex-radius)); }
   }
 
+  &.vp-count-8 {
+    .vp-vertex-6 { top: calc(30% - var(--vertex-radius)); left: calc(50% - var(--vertex-radius)); }
+    .vp-vertex-7 { top: calc(70% - var(--vertex-radius)); left: calc(50% - var(--vertex-radius)); }
+  }
+
   &.collapsed {
-    animation: rotation1 constants.$growthTransition;
+
+    .vertex-polygon-inner {
+      animation: rotation1 constants.$growthTransition;
+    }
 
     // all go to center when collapsed
    .vertex {

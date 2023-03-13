@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import './Simon.scss'
 import useIncrement from '../../hooks/useIncrement'
 import VertexPolygon from '../VertexPolygon'
-import useHighScore from '../../hooks/useHighScore'
 import {
-  HIGH_SCORE_SIMON,
   CLICK_FEEDBACK_TIMER,
   CLICK_FEEDBACK_DURATION,
   ROUND_PAUSE_TIMER,
@@ -12,22 +10,21 @@ import {
   INTER_ROUND_DURATION,
   INTER_ROUND_TIMER,
 } from '../../constants/game'
-import PropTypes from 'prop-types'
 import useArray from '../../hooks/useArray'
 import useDoOnceTimer from '../../hooks/useDoOnceTimer'
 import RoundTracker from '../RoundTracker'
 import {constructClassString} from '../../utilities'
 import Score from '../Score'
+import SettingsContext from '../../SettingsContext'
+import useHighScore from '../../hooks/useHighScore'
+import {SCENE_SIMON} from '../../constants/routes'
+import PropTypes from 'prop-types'
 
 function Simon(props) {
-  const vertexCount = props.vertexCount || 6
-  const [animatingRound, setAnimatingRound] = useState(false)
-  const {highScore, recordScore} = useHighScore(HIGH_SCORE_SIMON)
-  const {
-    array: correctPath,
-    append: appendCorrectStep,
-    resetArray: resetCorrectSteps,
-  } = useArray([])
+  const {recordScore, getHighScore} = useHighScore()
+  const {vertexCount} = useContext(SettingsContext)
+  const [animatingRound, setAnimatingRound] = useState(true)
+  const {array: correctPath, append: appendCorrectStep} = useArray([])
   const [canTouch, setCanTouch] = useState(false)
   const [activeVertex, setActiveVertex] = useState(null)
   const [isRevealing, setIsRevealing] = useState(false)
@@ -40,7 +37,6 @@ function Simon(props) {
   const [score, setScore] = useState(0)
 
   const startNextRound = () => {
-    console.log('Starting next round')
     setAnimatingRound(true)
 
     // starting a round involves selecting a new correct path vertex number
@@ -81,7 +77,6 @@ function Simon(props) {
         () => {
           setActiveVertex(null)
           setCanTouch(true)
-          console.log(correctPath)
           setIsRevealing(false)
         },
         1000, // wait 1 second after the last vertex is shown before we let the user start
@@ -113,12 +108,17 @@ function Simon(props) {
       )
       markGuess()
       // vertexCount is our pointValue
-      setScore(s => s + props.vertexCount)
+      setScore(s => s + vertexCount)
     } else {
       // TODO: How do we actually handle this?
       window.alert('WRONG!')
     }
   }
+
+  useEffect(() => {
+    console.log(score)
+    recordScore(SCENE_SIMON, vertexCount, score)
+  }, [score])
 
   return (
     <div
@@ -126,7 +126,12 @@ function Simon(props) {
         'simon-game': true,
         'round-rest': !!animatingRound,
       })}>
-      <Score score={score} />
+      <Score
+        score={score}
+        isHighScore={
+          score > 0 && getHighScore(SCENE_SIMON, vertexCount) <= score
+        }
+      />
       <div className="game-container">
         <VertexPolygon
           isCollapsed={animatingRound}
@@ -143,14 +148,14 @@ function Simon(props) {
         onShowNext={onShowNext}
         completed={guessCount}
         // vertexCount is our pointValue
-        pointValue={props.vertexCount}
+        pointValue={vertexCount}
       />
     </div>
   )
 }
 
 Simon.propTypes = {
-  vertexCount: PropTypes.number,
+  onNavigate: PropTypes.func,
 }
 
 export default Simon

@@ -4,6 +4,7 @@
 @use "layout";
 @use "constants";
 @use "animations";
+@use "elements";
 
 
 // UNIVERSAL BOX SIZING
@@ -12,6 +13,7 @@
 }
 
 html, body {
+  @include elements.disable-text-selection();
   font-size: 16px;
   font-family: typography.$fontFamilyRegular;
   width: 100%;
@@ -26,7 +28,6 @@ html, body {
 
   @include layout.small-and-below() {
     font-size: 14px;
-
   }
 }
 

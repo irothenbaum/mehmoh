@@ -17,11 +17,11 @@ $fontFamilyLight: 'light';
   src: url('/public/fonts/Montserrat-Light.ttf');
 }
 
-$fontSize1: 2rem;
-$fontSize2: 1.4rem;
-$fontSize3: 1.2rem;
-$fontSize4: 1rem;
-$fontSize5: 0.6rem;
+$fontSize1: 4.5rem;
+$fontSize2: 3rem;
+$fontSize3: 1.8rem;
+$fontSize4: 1.2rem;
+$fontSize5: 0.8rem;
 
 
 // some convenient aliases
@@ -49,9 +49,4 @@ $fontSizeFootnote: $fontSize5;
 @mixin body {
   font-size: $fontSizeBody;
   font-family: $fontFamilyRegular;
-}
-
-@mixin footnote {
-  font-size: $fontSizeFootnote;
-  font-family: $fontFamilyItalic;
 }

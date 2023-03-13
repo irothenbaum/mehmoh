@@ -7,7 +7,8 @@ import {useEffect, useRef} from 'react'
 import {constructClassString} from '../utilities'
 
 const SCORE_TICK_TIMER = 'score-tick-timer'
-const SCORE_TIME_TIMEOUT = 150
+// this is the how long it'll take the very last value to tick, values before will tick faster
+const SCORE_TIME_TIMEOUT = 300
 
 function Score(props) {
   const {setTimer, cancelTimer, cancelAllTimers} = useDoOnceTimer()
@@ -53,7 +54,12 @@ function Score(props) {
       }
 
       // we recurse to see if there are more ticks to give
-      setTimer(SCORE_TICK_TIMER, tickScore, SCORE_TIME_TIMEOUT)
+      setTimer(
+        SCORE_TICK_TIMER,
+        tickScore,
+        // divide by number of ticks so our number eases into the final value
+        Math.abs(SCORE_TIME_TIMEOUT / ticks),
+      )
     }
     tickScore()
   }, [props.score])
@@ -61,7 +67,10 @@ function Score(props) {
   return (
     <h3
       className={constructClassString(
-        {[`ticking-${ticking < 0 ? 'up' : 'down'}`]: ticking !== 0},
+        {
+          [`ticking-${ticking < 0 ? 'up' : 'down'}`]: ticking !== 0,
+          'high-score': !!props.isHighScore,
+        },
         'score',
       )}>
       {value}
@@ -71,6 +80,7 @@ function Score(props) {
 
 Score.propTypes = {
   score: PropTypes.number.isRequired,
+  isHighScore: PropTypes.bool,
 }
 
 export default Score

@@ -1,0 +1,137 @@
+@use '../../styles/layout';
+@use '../../styles/typography';
+@use '../../styles/colors';
+@use '../../styles/animations';
+@use '../../styles/constants';
+@use '../../styles/elements';
+
+// 0.5s matches Menu.jsx NAVIGATING_TIMEOUT
+$navigatingTransition: 0.5s ease-out;
+
+.menu-container {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: layout.$spaceExtraLarge layout.$spaceNormal;
+
+  h1 {
+    text-align: left;
+    font-size: typography.$fontSize1;
+    font-family: typography.$fontFamilyLight;
+
+    span.active {
+      color: colors.$activeColor;
+    }
+
+    span.secondary {
+      color: colors.$secondaryColor;
+    }
+  }
+
+  .menu-vertex-wrapper {
+    margin: layout.$spaceExtraLarge auto;
+    position: relative;
+    width: 100%;
+    padding-top: 50%;
+
+    .menu-vertex-wrapper-inner {
+      top: 0;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .vertex-polygon {
+    width: 50%;
+    transform: scale(0.6);
+    transition: width constants.$transition;
+
+    &.vp-count-5, &.vp-count-6, &.vp-count-7, &.vp-count-8{
+      width: 70%;
+    }
+
+    .vertex-polygon-inner {
+      animation: rotation 2s infinite linear;
+    }
+  }
+
+  .play-button {
+    button {
+      margin-bottom: layout.$spaceNormal;
+      border: none;
+      font-size: typography.$fontSize3;
+      color: colors.$white;
+      padding: layout.$spaceExtraSmall layout.$spaceNormal;
+      border-radius: layout.$borderRadiusSmall;
+      cursor: pointer;
+      text-shadow: 0 2px 2px colors.$shadow-25;
+      letter-spacing: 0.05em;
+      transition: all constants.$transition;
+
+      animation: pulse 2s infinite alternate linear;
+    }
+  }
+
+  .settings-container {
+    .select-vertex-count-container {
+      margin-bottom: layout.$spaceLarge;
+    }
+
+    h4 {
+      span {
+        display: inline-block;
+        padding: layout.$spaceExtraSmall layout.$spaceSmall;
+        font-size: typography.$fontSize4;
+        vertical-align: middle;
+
+      }
+
+    }
+  }
+
+  // the way we animate the items off screen to start the game
+  &.navigating {
+    h1 {
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: all $navigatingTransition;
+    }
+
+    .menu-vertex-wrapper {
+      padding-top: 100%;
+      transition: all $navigatingTransition;
+
+      .vertex-polygon {
+        transition: all $navigatingTransition;
+        transform: scale(1);
+
+      }
+    }
+
+    .play-button, .settings-container {
+      transform: translateY(100%);
+      opacity: 0;
+      transition: all $navigatingTransition;
+    }
+  }
+}
+
+
+@keyframes pulse {
+  0% {
+    background-color: colors.$midnightBlue;
+    @include elements.shadow1(colors.$activeColor);
+  }
+  to {
+    @include elements.shadow1(colors.$midnightBlue);
+    background-color: colors.$activeColor;
+  }
+}

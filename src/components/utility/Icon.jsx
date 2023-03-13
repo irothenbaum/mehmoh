@@ -9,12 +9,16 @@ import {
   faSpinner,
   faCheck,
   faTimes,
+  faChevronUp,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons'
 import {faCircle} from '@fortawesome/free-regular-svg-icons'
 import {constructClassString} from '../../utilities'
 
 export const CHEVRON_LEFT = faChevronLeft
 export const CHEVRON_RIGHT = faChevronRight
+export const CHEVRON_UP = faChevronUp
+export const CHEVRON_DOWN = faChevronDown
 export const DOWNLOAD = faDownload
 export const SPINNER = faSpinner
 export const CHECK = faCheck

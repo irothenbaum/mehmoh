@@ -3,6 +3,7 @@
 @use '../styles/colors';
 @use '../styles/elements';
 @use '../styles/typography';
+@use 'sass:math';
 
 $blockDimension: 3em;
 $roundLineHeight: 0.4em;
@@ -41,21 +42,21 @@ $roundLineHeight: 0.4em;
 
   .round-step {
     display: block;
-    height: $blockDimension / 2;
+    height: math.div($blockDimension, 2);
     width: $blockDimension;
-    line-height: $blockDimension / 2;
+    line-height: math.div($blockDimension, 2);
     text-align: center;
     border-radius: layout.$borderRadiusSmall;
     opacity: 1;
     background-color: colors.$midnightBlue;
-    font-size: typography.$fontSize4;
+    font-size: typography.$fontSize5;
     position: relative;
 
     &:before {
       visibility: hidden;
       content: '+1';
       position: absolute;
-      font-size: typography.$fontSize3;
+      font-size: typography.$fontSize4;
       top: 0;
       left: 0;
       width: 100%;
@@ -99,6 +100,7 @@ $roundLineHeight: 0.4em;
   &.point-value-6 .round-step:before { content: '+6'; }
   &.point-value-7 .round-step:before { content: '+7'; }
   &.point-value-8 .round-step:before { content: '+8'; }
+  &.point-value-9 .round-step:before { content: '+9'; }
 }
 
 

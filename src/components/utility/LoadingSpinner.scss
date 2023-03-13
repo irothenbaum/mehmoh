@@ -2,10 +2,10 @@
 
 .loading-spinner {
   text-align: center;
-  font-size: typography.$fontSize1;
+  font-size: typography.$fontSize3;
 
-  &.x-small { font-size: typography.$fontSize4;}
-  &.small { font-size: typography.$fontSize2;}
-  &.large { font-size: 2.6rem; }
-  &.x-large { font-size: 3.2rem; }
+  &.x-small { font-size: typography.$fontSize5;}
+  &.small { font-size: typography.$fontSize4;}
+  &.large { font-size: typography.$fontSize2; }
+  &.x-large { font-size: typography.$fontSize1; }
 }

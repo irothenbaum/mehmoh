@@ -12,3 +12,8 @@ export const INTER_ROUND_TIMER = 'inter-round'
 
 export const REVEAL_TIMER = 'reveal-timer'
 export const REVEAL_TIMEOUT = 1000 // the pace to reveal the next target vertex, should probably be >= CLICK_FEEDBACK
+
+export const MIN_VERTEX_COUNT = 3
+export const MAX_VERTEX_COUNT = 8
+
+export const SETTINGS_CACHE_KEY = 'settings-cache-key'

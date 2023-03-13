@@ -1,23 +1,47 @@
-import {useState} from 'react'
+import React, {useContext} from 'react'
+import SettingsContext from '../SettingsContext'
 
 /**
- * @param {string} gameKey
+ * @param {string} game
+ * @param {number} vertexCount
+ * @return {string}
  */
-function useHighScore(gameKey) {
-  const [highScore, setHighScore] = useState(
-    parseInt(window.localStorage[gameKey]) || 0,
-  )
+function getScoreKey(game, vertexCount) {
+  return `${game}-${vertexCount}`
+}
 
-  const handleSetHighScore = newScore => {
-    if (newScore > highScore) {
-      window.localStorage[gameKey] = newScore
-      setHighScore(newScore)
-    }
+function useHighScore() {
+  const {highScores, updateSettings} = useContext(SettingsContext)
+
+  /**
+   * @param {string} game
+   * @param {number} vertexCount
+   * @param {number} score
+   */
+  const recordScore = (game, vertexCount, score) => {
+    const scoreKey = getScoreKey(game, vertexCount)
+    const currentHighScore = highScores[scoreKey]
+    updateSettings({
+      highScores: {
+        ...highScores,
+        [scoreKey]: Math.max(currentHighScore, score),
+      },
+    })
+  }
+
+  /**
+   * @param {string} game
+   * @param {number} vertexCount
+   * @return {*}
+   */
+  const getHighScore = (game, vertexCount) => {
+    const scoreKey = getScoreKey(game, vertexCount)
+    return highScores[scoreKey] || 0
   }
 
   return {
-    recordScore: handleSetHighScore,
-    highScore: highScore,
+    recordScore,
+    getHighScore,
   }
 }
 

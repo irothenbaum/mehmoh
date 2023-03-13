@@ -26,7 +26,7 @@
 }
 
 @mixin shadow1($shadowColor: colors.$shadow-25) {
-  box-shadow: 0 0 8px 0 $shadowColor;
+  box-shadow: 0 0 0.5em 0 $shadowColor;
 }
 
 @mixin pageContainer() {

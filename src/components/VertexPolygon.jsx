@@ -27,16 +27,18 @@ function VertexPolygon(props) {
         `vp-count-${props.count}`,
         props.className,
       )}>
-      {[...new Array(props.count)].map((e, i) => (
-        <Vertex
-          key={i}
-          className={`vp-vertex-${i}`}
-          isActive={i === props.activeVertex}
-          isSecondary={props.isSecondary}
-          onContactStart={() => handleContactStart(i)}
-          onContactEnd={() => handleContactEnd(i)}
-        />
-      ))}
+      <div className="vertex-polygon-inner">
+        {[...new Array(props.count)].map((e, i) => (
+          <Vertex
+            key={i}
+            className={`vp-vertex-${i}`}
+            isActive={i === props.activeVertex}
+            isSecondary={props.isSecondary}
+            onContactStart={() => handleContactStart(i)}
+            onContactEnd={() => handleContactEnd(i)}
+          />
+        ))}
+      </div>
     </div>
   )
 }

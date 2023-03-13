@@ -1,9 +1,12 @@
+@use '../styles/colors';
+
 #mehmoh {
   height: 100%;
   width: 100%;
   max-width: 50vh;
   max-height: 200vw;
   margin: 0 auto;
-  background-color: var(--background-color);
+  // background: linear-gradient(20deg, rgba(0,218,255,0.25) 0%, colors.$slate 40%, colors.$slate 60%, rgba(255,151,0,0.25) 100%);
+  background-color: colors.$slate;
   overflow: hidden;
 }
