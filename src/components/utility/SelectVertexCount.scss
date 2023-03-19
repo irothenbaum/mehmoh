@@ -22,16 +22,22 @@
     justify-content: space-evenly;
 
     .icon-container {
-      font-size: typography.$fontSize2;
+      font-size: typography.$fontSize3;
       transition: all constants.$transition;
 
       &.active {
         color: colors.$activeColor;
         opacity: 1;
       }
+
       &.secondary {
         color: colors.$secondaryColor;
         opacity: 1;
+      }
+
+      &.disabled {
+        color: colors.$shadow-25;
+        cursor: not-allowed;
       }
     }
   }

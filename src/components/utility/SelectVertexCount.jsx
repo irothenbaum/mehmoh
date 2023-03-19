@@ -50,12 +50,18 @@ function SelectVertexCount() {
         <Icon
           {...incContactProps}
           icon={CHEVRON_UP}
-          className={constructClassString({active: changeDirection > 0})}
+          className={constructClassString({
+            active: changeDirection > 0,
+            disabled: vertexCount >= MAX_VERTEX_COUNT,
+          })}
         />
         <Icon
           {...decContactProps}
           icon={CHEVRON_DOWN}
-          className={constructClassString({secondary: changeDirection < 0})}
+          className={constructClassString({
+            secondary: changeDirection < 0,
+            disabled: vertexCount <= MIN_VERTEX_COUNT,
+          })}
         />
       </div>
     </div>

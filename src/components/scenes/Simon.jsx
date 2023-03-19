@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import './Simon.scss'
 import useIncrement from '../../hooks/useIncrement'
 import VertexPolygon from '../VertexPolygon'
@@ -19,12 +19,18 @@ import SettingsContext from '../../SettingsContext'
 import useHighScore from '../../hooks/useHighScore'
 import {SCENE_SIMON} from '../../constants/routes'
 import PropTypes from 'prop-types'
+import GameOverResult from '../GameOverResult'
+
+// first 3 correct (offset=-1,0,1) answers are always worth 1, then you can get on fire
+const FIRE_OFFSET = 1
 
 function Simon(props) {
   const {recordScore, getHighScore} = useHighScore()
   const {vertexCount} = useContext(SettingsContext)
   const [animatingRound, setAnimatingRound] = useState(true)
-  const {array: correctPath, append: appendCorrectStep} = useArray([])
+  const {array: correctPath, append: appendCorrectStep} = useArray([
+    0, 1, 2, 3, 0, 1,
+  ])
   const [canTouch, setCanTouch] = useState(false)
   const [activeVertex, setActiveVertex] = useState(null)
   const [isRevealing, setIsRevealing] = useState(false)
@@ -35,6 +41,14 @@ function Simon(props) {
   } = useIncrement(0)
   const {setTimer, cancelAllTimers} = useDoOnceTimer()
   const [score, setScore] = useState(0)
+  const [streak, setStreak] = useState(0)
+  const longestStreak = useRef(0)
+  const isOnFire = streak > 2
+  const [isGameOver, setIsGameOver] = useState(false)
+  const [pointValuesArr, setPointValuesArr] = useState([])
+
+  // the first FIRE_OFFSET answers are worth 1, then subsequent correct answers are worth +1..Vertex Count
+  const pointValue = Math.min(Math.max(1, streak - FIRE_OFFSET), vertexCount)
 
   const startNextRound = () => {
     setAnimatingRound(true)
@@ -55,6 +69,7 @@ function Simon(props) {
         setAnimatingRound(false)
         setIsRevealing(true)
         appendCorrectStep(nextVert)
+        setPointValuesArr([])
       },
       INTER_ROUND_DURATION,
     )
@@ -107,16 +122,27 @@ function Simon(props) {
         CLICK_FEEDBACK_DURATION,
       )
       markGuess()
-      // vertexCount is our pointValue
-      setScore(s => s + vertexCount)
+      setPointValuesArr(s => [...s, pointValue])
+      setScore(
+        // first 3 answers correct are worth 1, then 2, then 3, then 4 ... up to vertexCount
+        s => s + pointValue,
+      )
+      setStreak(s => s + 1)
     } else {
-      // TODO: How do we actually handle this?
-      window.alert('WRONG!')
+      if (isOnFire) {
+        setStreak(0)
+      } else {
+        // if you get one wrong not on fire, this will be game over?
+        setIsGameOver(true)
+      }
     }
   }
 
   useEffect(() => {
-    console.log(score)
+    longestStreak.current = Math.max(longestStreak.current, streak)
+  }, [streak])
+
+  useEffect(() => {
     recordScore(SCENE_SIMON, vertexCount, score)
   }, [score])
 
@@ -126,6 +152,14 @@ function Simon(props) {
         'simon-game': true,
         'round-rest': !!animatingRound,
       })}>
+      {isGameOver && (
+        <GameOverResult
+          answeredCorrected={pointValuesArr.length}
+          longestStreak={longestStreak.current}
+          score={score}
+          difficulty={vertexCount}
+        />
+      )}
       <Score
         score={score}
         isHighScore={
@@ -147,8 +181,8 @@ function Simon(props) {
         total={correctPath.length}
         onShowNext={onShowNext}
         completed={guessCount}
-        // vertexCount is our pointValue
-        pointValue={vertexCount}
+        pointValue={[...pointValuesArr, pointValue]}
+        maxPointValue={vertexCount}
       />
     </div>
   )

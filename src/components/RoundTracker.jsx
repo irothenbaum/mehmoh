@@ -8,6 +8,15 @@ import {REVEAL_TIMER, REVEAL_TIMEOUT} from '../constants/game'
 
 const DEFAULT_BLOCKS_COUNT = 1
 
+/**
+ * @param {Array<number>} arr
+ * @param {number} i
+ * @return {number}
+ */
+function getIndexOfArrayOrNumberIfExists(arr, i) {
+  return (Array.isArray(arr) ? arr[i] : arr) || 1
+}
+
 function RoundTracker(props) {
   const [showing, setShowing] = useState(-5)
   const [blocksPerLine, setBlocksPerLine] = useState(DEFAULT_BLOCKS_COUNT)
@@ -38,7 +47,15 @@ function RoundTracker(props) {
     // if we haven't revealed every block
     if (!isDoneShowing) {
       // then wait the reveal timeout before recursively invoking revealNext
-      setTimer(REVEAL_TIMER, () => setShowing(p => p + 1), REVEAL_TIMEOUT)
+      setTimer(
+        REVEAL_TIMER,
+        () => setShowing(p => p + 1),
+        Math.min(
+          REVEAL_TIMEOUT,
+          // after we get through one line, the speed will start to pick up
+          (REVEAL_TIMEOUT * blocksPerLine) / props.total,
+        ),
+      )
     }
   }, [showing])
 
@@ -46,8 +63,8 @@ function RoundTracker(props) {
     if (node && blocksPerLine === DEFAULT_BLOCKS_COUNT) {
       // TODO: What if screen size changes???
       const containerWidth = node.parentElement.clientWidth
-      const blockWidth = node.clientWidth + 4 // add a little extra padding because we want them spaced
-      setBlocksPerLine(Math.floor(containerWidth / blockWidth))
+      const bWidth = node.clientWidth + 4 // add a little extra padding because we want them spaced
+      setBlocksPerLine(Math.floor(containerWidth / bWidth))
     }
   }, [])
 
@@ -89,7 +106,6 @@ function RoundTracker(props) {
       className={constructClassString(
         {hidden: props.isHidden || showing < 0},
         'round-tracker',
-        `point-value-${props.pointValue || 1}`,
         props.className,
       )}>
       {[...new Array(linesAbove)].map((e, i) => (
@@ -97,11 +113,24 @@ function RoundTracker(props) {
           key={`line-above-${i}`}
           className={constructClassString(
             {
-              // will only ever be black above, never revealed or completed
+              // will only ever be empty above, never revealed or completed
             },
             'round-line',
-          )}
-        />
+          )}>
+          {[...new Array(blocksPerLine)].map((e, blockIndex) => {
+            const modulo = props.total % blocksPerLine
+            const isVisible = i > 0 || blockIndex < modulo || modulo === 0
+            return (
+              <span
+                className={constructClassString(
+                  {hidden: !isVisible},
+                  'point-block',
+                  'empty',
+                )}
+              />
+            )
+          })}
+        </div>
       ))}
       <div className="round-step-container">
         {[...new Array(blocksPerLine)].map((e, i) => {
@@ -113,20 +142,25 @@ function RoundTracker(props) {
           const isTip = !props.isRevealing && key === props.completed // we highlight the one currently being shown
 
           const refProps = i === 0 ? {ref: onRefChange} : {}
-
+          const pointValue = getIndexOfArrayOrNumberIfExists(
+            props.pointValue,
+            key,
+          )
           return (
             <span
               {...refProps}
               key={key}
               className={constructClassString(
                 {
-                  [`key-${key}`]: true,
                   'is-tip': isTip,
                   completed: isCompleted,
                   'not-visible': !isVisible,
                   revealed: isRevealed,
+                  'max-point': pointValue === props.maxPointValue,
                 },
                 'round-step',
+                `key-${key}`,
+                `point-value-${pointValue}`,
               )}>
               {isCompleted ? (
                 <Icon icon={CHECK} />
@@ -146,8 +180,23 @@ function RoundTracker(props) {
               completed: !props.isRevealing,
             },
             'round-line',
-          )}
-        />
+          )}>
+          {[...new Array(blocksPerLine)].map((e, blockIndex) => {
+            const pointValue = getIndexOfArrayOrNumberIfExists(
+              props.pointValue,
+              i * blocksPerLine + blockIndex,
+            )
+            return (
+              <span
+                className={constructClassString(
+                  {'max-point': pointValue === props.maxPointValue},
+                  'point-block',
+                  `point-value-${pointValue}`,
+                )}
+              />
+            )
+          })}
+        </div>
       ))}
     </div>
   )
@@ -161,7 +210,11 @@ RoundTracker.propTypes = {
   // showing: PropTypes.number,
   completed: PropTypes.number,
   className: PropTypes.string,
-  pointValue: PropTypes.number,
+  pointValue: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number),
+  ]),
+  maxPointValue: PropTypes.number,
 }
 
 export default RoundTracker

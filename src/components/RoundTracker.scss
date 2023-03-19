@@ -5,13 +5,14 @@
 @use '../styles/typography';
 @use 'sass:math';
 
-$blockDimension: 3em;
-$roundLineHeight: 0.4em;
+$blockDimension: 4em;
+$roundLineHeight: 0.8em;
 
 .round-tracker {
   width: 100%;
   transition: transform constants.$transition;
   transition-delay: 0.5s;
+  font-size: typography.$fontSize5;
 
   &.hidden {
     transform: translateY(150%);
@@ -19,18 +20,31 @@ $roundLineHeight: 0.4em;
 
   .round-line {
     margin: layout.$spaceSmall 0;
-    background-color: colors.$midnightBlue;
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
     height: $roundLineHeight;
     animation: grow 0.2s linear;
     width: 100%;
     transition: height constants.$growthTransition;
 
     &.revealed {
-      background-color: colors.$secondaryColor;
+      .point-block {
+        background-color: colors.$secondaryColor !important;
+      }
     }
 
-    &.completed {
-      background-color: colors.$activeColor;
+    .point-block {
+      display: block;
+      height: 100%;
+      width: $blockDimension;
+      border-radius: layout.$borderRadiusSmall;
+      background-color: colors.$legendaryColor;
+
+      &.point-value-1 {background-color: colors.$activeColor;}
+      &.max-point {background-color: colors.$epicColor;}
+      &.empty {background-color: colors.$midnightBlue;}
+      &.hidden {visibility: hidden;}
     }
   }
 
@@ -42,25 +56,26 @@ $roundLineHeight: 0.4em;
 
   .round-step {
     display: block;
-    height: math.div($blockDimension, 2);
+    height: math.div($blockDimension, 1.6);
     width: $blockDimension;
-    line-height: math.div($blockDimension, 2);
+    line-height: math.div($blockDimension, 1.6);
     text-align: center;
     border-radius: layout.$borderRadiusSmall;
     opacity: 1;
     background-color: colors.$midnightBlue;
-    font-size: typography.$fontSize5;
     position: relative;
+    @include elements.shadow1(colors.$backgroundColor);
 
+    // the color defaults are for points 2 -> n, and point value 1 is the override
     &:before {
       visibility: hidden;
-      content: '+1';
+      content: '+2';
       position: absolute;
       font-size: typography.$fontSize4;
       top: 0;
       left: 0;
       width: 100%;
-      color: colors.$activeColor;
+      color: colors.$legendaryColor;
       opacity: 1;
       font-family: typography.$fontFamilyBold;
     }
@@ -70,7 +85,8 @@ $roundLineHeight: 0.4em;
     }
 
     &.is-tip {
-      @include elements.shadow1(colors.$activeColor);
+      @include elements.shadow1(colors.$legendaryColor);
+      transition: box-shadow constants.$transition;
     }
 
     &.revealed {
@@ -81,7 +97,7 @@ $roundLineHeight: 0.4em;
     }
 
     &.completed {
-      background-color: colors.$activeColor;
+      background-color: colors.$legendaryColor;
       @include elements.shadow1();
 
       &:before {
@@ -91,16 +107,78 @@ $roundLineHeight: 0.4em;
         animation: disappear 1s constants.$transitionEasing forwards;
       }
     }
+
+    &.point-value-1 {
+      &:before {
+        content: '+1';
+        color: colors.$activeColor;
+      }
+      &.completed {
+        background-color: colors.$activeColor;
+      }
+      &.is-tip {
+        @include elements.shadow1(colors.$activeColor);
+      }
+    }
+
+    &.max-point {
+      &:before {
+        color: colors.$epicColor;
+      }
+      &.completed {
+        background-color: colors.$epicColor;
+      }
+      &.is-tip {
+        @include elements.shadow1(colors.$epicColor);
+      }
+    }
+
+    &.point-value-3 {
+      &:before {
+        content: '+3';
+      }
+    }
+
+    &.point-value-4 {
+      &:before {
+        content: '+4';
+      }
+    }
+
+    &.point-value-5 {
+      &:before {
+        content: '+5';
+      }
+    }
+
+    &.point-value-6 {
+      &:before {
+        content: '+6';
+      }
+    }
+
+    &.point-value-7 {
+      &:before {
+        content: '+7';
+      }
+    }
+    &.point-value-8 {
+      &:before {
+        content: '+8';
+      }
+    }
+
+    &.point-value-9 {
+      &:before {
+        content: '+9';
+      }
+    }
   }
 
-  &.point-value-2 .round-step:before { content: '+2'; }
-  &.point-value-3 .round-step:before { content: '+3'; }
-  &.point-value-4 .round-step:before { content: '+4'; }
-  &.point-value-5 .round-step:before { content: '+5'; }
-  &.point-value-6 .round-step:before { content: '+6'; }
-  &.point-value-7 .round-step:before { content: '+7'; }
-  &.point-value-8 .round-step:before { content: '+8'; }
-  &.point-value-9 .round-step:before { content: '+9'; }
+  .point-block {
+
+
+  }
 }
 
 
