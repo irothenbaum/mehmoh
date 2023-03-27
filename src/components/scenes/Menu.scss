@@ -60,18 +60,8 @@ $navigatingTransition: 0.5s ease-out;
 
   .play-button {
     button {
+      @include elements.button();
       margin-bottom: layout.$spaceNormal;
-      border: none;
-      font-size: typography.$fontSize3;
-      color: colors.$white;
-      padding: layout.$spaceExtraSmall layout.$spaceNormal;
-      border-radius: layout.$borderRadiusSmall;
-      cursor: pointer;
-      text-shadow: 0 2px 2px colors.$shadow-25;
-      letter-spacing: 0.05em;
-      transition: all constants.$transition;
-
-      animation: pulse 2s infinite alternate linear;
     }
   }
 
@@ -116,17 +106,5 @@ $navigatingTransition: 0.5s ease-out;
       opacity: 0;
       transition: all $navigatingTransition;
     }
-  }
-}
-
-
-@keyframes pulse {
-  0% {
-    background-color: colors.$midnightBlue;
-    @include elements.shadow1(colors.$activeColor);
-  }
-  to {
-    @include elements.shadow1(colors.$midnightBlue);
-    background-color: colors.$activeColor;
   }
 }

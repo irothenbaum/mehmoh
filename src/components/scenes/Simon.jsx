@@ -17,7 +17,7 @@ import {constructClassString} from '../../utilities'
 import Score from '../Score'
 import SettingsContext from '../../SettingsContext'
 import useHighScore from '../../hooks/useHighScore'
-import {SCENE_SIMON} from '../../constants/routes'
+import {SCENE_MENU, SCENE_SIMON} from '../../constants/routes'
 import PropTypes from 'prop-types'
 import GameOverResult from '../GameOverResult'
 import Icon, {SHIELD} from '../utility/Icon'
@@ -34,9 +34,7 @@ function Simon(props) {
   const {recordScore, getHighScore} = useHighScore()
   const {vertexCount} = useContext(SettingsContext)
   const [animatingRound, setAnimatingRound] = useState(true)
-  const {array: correctPath, append: appendCorrectStep} = useArray([
-    0, 1, 2, 3, 0, 1,
-  ])
+  const {array: correctPath, append: appendCorrectStep} = useArray([])
   const [canTouch, setCanTouch] = useState(false)
   const [activeVertex, setActiveVertex] = useState(null)
   const [isRevealing, setIsRevealing] = useState(false)
@@ -50,7 +48,7 @@ function Simon(props) {
   const [streak, setStreak] = useState(0)
   const longestStreak = useRef(0)
   const isOnFire = isStreakOnFire(streak)
-  const [isGameOver, setIsGameOver] = useState(false)
+  const [isGameOver, setIsGameOver] = useState(true)
   const [pointValuesArr, setPointValuesArr] = useState([])
   const [disabledVertex, setDisabledVertex] = useState(null)
   const allPointValues = useRef([])
@@ -161,6 +159,10 @@ function Simon(props) {
     recordScore(SCENE_SIMON, vertexCount, score)
   }, [score])
 
+  const handleReturn = () => {
+    props.onNavigate(SCENE_MENU)
+  }
+
   return (
     <div
       className={constructClassString({
@@ -173,6 +175,7 @@ function Simon(props) {
           longestStreak={longestStreak.current}
           score={score}
           difficulty={vertexCount}
+          onDone={() => handleReturn}
         />
       )}
       <div className="header-container">

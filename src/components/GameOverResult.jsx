@@ -4,6 +4,8 @@ import RoundTracker from './RoundTracker'
 import PropTypes from 'prop-types'
 import Score from './Score'
 import useDoOnceTimer from '../hooks/useDoOnceTimer'
+import useContact from '../hooks/useContact'
+import {SCENE_SIMON} from '../constants/routes'
 
 const FINAL_SCORE_REVEAL = 'final-score-reveal'
 const FINAL_SCORE_REVEAL_TIMEOUT = 3000
@@ -11,6 +13,9 @@ const FINAL_SCORE_REVEAL_TIMEOUT = 3000
 function GameOverResult(props) {
   const [score, setScore] = useState(0)
   const {setTimer} = useDoOnceTimer()
+  const {contactProps} = useContact({
+    onPress: props.onDone,
+  })
 
   useEffect(() => {
     const finalScore = props.score + props.longestStreak * props.difficulty
@@ -45,8 +50,14 @@ function GameOverResult(props) {
         <h3>
           Longest streak: <span>{props.longestStreak}</span>
         </h3>
+      </div>
 
+      <div className="score-container">
         <Score score={score} />
+      </div>
+
+      <div className="back-button">
+        <button {...contactProps}>Back</button>
       </div>
     </div>
   )
@@ -57,6 +68,7 @@ GameOverResult.propTypes = {
   answerValues: PropTypes.arrayOf(PropTypes.number).isRequired,
   longestStreak: PropTypes.number.isRequired,
   difficulty: PropTypes.number,
+  onDone: PropTypes.func.isRequired,
 }
 
 export default GameOverResult

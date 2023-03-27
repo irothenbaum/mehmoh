@@ -5,35 +5,58 @@
 
 .game-over-results-container {
   @include elements.full-page(absolute);
+  display: flex;
+  flex-direction: column;
   background-color: colors.$midnightBlue;
   z-index: 20;
 
   .game-over-section {
     padding: layout.$spaceNormal;
+    flex-grow: 0;
 
-  }
+    h1 {
+      font-size: typography.$fontSize2;
+    }
 
-  h1 {
-    font-size: typography.$fontSize2;
-  }
-  h3 {
-    font-size: typography.$fontSize4;
-    margin-bottom: layout.$spaceSmall;
+    h3 {
+      font-size: typography.$fontSize4;
+      margin-bottom: layout.$spaceSmall;
 
-    span {
-      font-size: typography.$fontSize3;
+      span {
+        font-size: typography.$fontSize3;
+      }
     }
   }
 
+
   .round-tracker {
     position: static;
-
+    flex-grow: 0;
   }
 
-  .score {
-    display: block;
-    margin-top: layout.$spaceLarge;
+  .score-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    height: 100%;
+    .score {
+      display: block;
+      margin-bottom: layout.$spaceNormal;
+    }
+  }
+
+  .back-button {
+    position: absolute;
+    bottom: layout.$spaceNormal;
+    text-align: center;
     width: 100%;
+
+    button {
+      @include elements.button();
+      display: block;
+      margin: 0 auto;
+    }
 
   }
 }

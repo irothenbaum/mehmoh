@@ -1,5 +1,7 @@
 @use './constants.scss';
 @use './colors.scss';
+@use './layout.scss';
+@use './typography.scss';
 
 @mixin hover-cta {
   cursor: pointer;
@@ -37,4 +39,28 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+@mixin button() {
+  @keyframes pulse {
+    0% {
+      background-color: colors.$midnightBlue;
+      @include shadow1(colors.$activeColor);
+    }
+    to {
+      @include shadow1(colors.$midnightBlue);
+      background-color: colors.$activeColor;
+    }
+  }
+
+  font-size: typography.$fontSize3;
+  padding: layout.$spaceExtraSmall layout.$spaceNormal;
+  border: none;
+  color: colors.$white;
+  border-radius: layout.$borderRadiusSmall;
+  cursor: pointer;
+  text-shadow: 0 2px 2px colors.$shadow-25;
+  letter-spacing: 0.05em;
+  transition: all constants.$transition;
+  animation: pulse 2s infinite alternate linear;
 }
