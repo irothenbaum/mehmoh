@@ -1,6 +1,39 @@
 @use '../styles/colors';
 @use '../styles/elements';
+@use '../styles/typography';
+@use '../styles/layout';
 
 .game-over-results-container {
-  @include elements.full-page(fixed)
+  @include elements.full-page(absolute);
+  background-color: colors.$midnightBlue;
+  z-index: 20;
+
+  .game-over-section {
+    padding: layout.$spaceNormal;
+
+  }
+
+  h1 {
+    font-size: typography.$fontSize2;
+  }
+  h3 {
+    font-size: typography.$fontSize4;
+    margin-bottom: layout.$spaceSmall;
+
+    span {
+      font-size: typography.$fontSize3;
+    }
+  }
+
+  .round-tracker {
+    position: static;
+
+  }
+
+  .score {
+    display: block;
+    margin-top: layout.$spaceLarge;
+    width: 100%;
+
+  }
 }

@@ -65,7 +65,7 @@ function Score(props) {
   }, [props.score])
 
   return (
-    <h3
+    <span
       className={constructClassString(
         {
           [`ticking-${ticking < 0 ? 'up' : 'down'}`]: ticking !== 0,
@@ -74,7 +74,7 @@ function Score(props) {
         'score',
       )}>
       {value}
-    </h3>
+    </span>
   )
 }
 

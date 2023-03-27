@@ -53,6 +53,7 @@ function Simon(props) {
   const [isGameOver, setIsGameOver] = useState(false)
   const [pointValuesArr, setPointValuesArr] = useState([])
   const [disabledVertex, setDisabledVertex] = useState(null)
+  const allPointValues = useRef([])
 
   // the first FIRE_OFFSET answers are worth 1, then subsequent correct answers are worth +1..Vertex Count
   const pointValue = Math.min(Math.max(1, streak - FIRE_OFFSET), vertexCount)
@@ -76,7 +77,10 @@ function Simon(props) {
         setAnimatingRound(false)
         setIsRevealing(true)
         appendCorrectStep(nextVert)
-        setPointValuesArr([])
+        setPointValuesArr(arr => {
+          allPointValues.current = allPointValues.current.concat(arr)
+          return []
+        })
       },
       INTER_ROUND_DURATION,
     )
@@ -141,6 +145,8 @@ function Simon(props) {
         setStreak(0)
         setDisabledVertex(vertNum)
       } else {
+        // store progress from mid round
+        allPointValues.current = allPointValues.current.concat(pointValuesArr)
         // if you get one wrong not on fire, this will be game over?
         setIsGameOver(true)
       }
@@ -163,7 +169,7 @@ function Simon(props) {
       })}>
       {isGameOver && (
         <GameOverResult
-          answeredCorrected={pointValuesArr.length}
+          answerValues={allPointValues.current}
           longestStreak={longestStreak.current}
           score={score}
           difficulty={vertexCount}

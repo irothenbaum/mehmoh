@@ -18,7 +18,7 @@ function getIndexOfArrayOrNumberIfExists(arr, i) {
 }
 
 function RoundTracker(props) {
-  const [showing, setShowing] = useState(-5)
+  const [showing, setShowing] = useState(props.initialShowing || -5)
   const [blocksPerLine, setBlocksPerLine] = useState(DEFAULT_BLOCKS_COUNT)
   const {setTimer} = useDoOnceTimer()
 
@@ -209,7 +209,7 @@ RoundTracker.propTypes = {
   onShowNext: PropTypes.func.isRequired,
   isRevealing: PropTypes.bool,
   isHidden: PropTypes.bool,
-  // showing: PropTypes.number,
+  initialShowing: PropTypes.number,
   completed: PropTypes.number,
   className: PropTypes.string,
   pointValue: PropTypes.oneOfType([

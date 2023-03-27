@@ -23,14 +23,28 @@ function GameOverResult(props) {
 
   return (
     <div className="game-over-results-container">
-      <div>
+      <div className="game-over-section">
         <h1>Game Over</h1>
-
-        <RoundTracker total={props.answeredCorrected} onShowNext={() => {}} />
-
-        <h3>Score: {props.score}</h3>
-        <h3>Answered Correct: {props.answeredCorrected}</h3>
-        <h3>Longest streak: {props.longestStreak}</h3>
+      </div>
+      <RoundTracker
+        initialShowing={props.answerValues.length}
+        isRevealing={false}
+        total={props.answerValues.length}
+        completed={props.answerValues.length}
+        pointValue={props.answerValues}
+        onShowNext={() => {}}
+        maxPointValue={props.difficulty}
+      />
+      <div className="game-over-section">
+        <h3>
+          Score: <span>{props.score}</span>
+        </h3>
+        <h3>
+          Answered Correct: <span>{props.answerValues.length}</span>
+        </h3>
+        <h3>
+          Longest streak: <span>{props.longestStreak}</span>
+        </h3>
 
         <Score score={score} />
       </div>
@@ -40,7 +54,7 @@ function GameOverResult(props) {
 
 GameOverResult.propTypes = {
   score: PropTypes.number.isRequired,
-  answeredCorrected: PropTypes.number.isRequired,
+  answerValues: PropTypes.arrayOf(PropTypes.number).isRequired,
   longestStreak: PropTypes.number.isRequired,
   difficulty: PropTypes.number,
 }
