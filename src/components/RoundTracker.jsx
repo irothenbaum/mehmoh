@@ -122,6 +122,7 @@ function RoundTracker(props) {
             const isVisible = i > 0 || blockIndex < modulo || modulo === 0
             return (
               <span
+                key={`point-block-above-${i}-${blockIndex}`}
                 className={constructClassString(
                   {hidden: !isVisible},
                   'point-block',
@@ -188,6 +189,7 @@ function RoundTracker(props) {
             )
             return (
               <span
+                key={`point-block-below-${i}-${blockIndex}`}
                 className={constructClassString(
                   {'max-point': pointValue === props.maxPointValue},
                   'point-block',

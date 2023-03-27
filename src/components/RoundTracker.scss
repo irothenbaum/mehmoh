@@ -43,7 +43,7 @@ $roundLineHeight: 0.8em;
 
       &.point-value-1 {background-color: colors.$activeColor;}
       &.max-point {background-color: colors.$epicColor;}
-      &.empty {background-color: colors.$midnightBlue;}
+      &.empty {background-color: colors.$shadow-25;}
       &.hidden {visibility: hidden;}
     }
   }
@@ -62,7 +62,7 @@ $roundLineHeight: 0.8em;
     text-align: center;
     border-radius: layout.$borderRadiusSmall;
     opacity: 1;
-    background-color: colors.$midnightBlue;
+    background-color: colors.$shadow-25 ;
     position: relative;
     @include elements.shadow1(colors.$backgroundColor);
 
@@ -104,7 +104,8 @@ $roundLineHeight: 0.8em;
         visibility: visible;
         top: -100%;
         transition: top constants.$transition;
-        animation: disappear 1s constants.$transitionEasing forwards;
+        animation: disappear 0.5s constants.$transitionEasing forwards;
+        animation-delay: 0.5s;
       }
     }
 
@@ -181,27 +182,11 @@ $roundLineHeight: 0.8em;
   }
 }
 
-
 @keyframes grow {
   from {
     height: 0;
   }
   to {
     height: $roundLineHeight;
-  }
-}
-
-@keyframes disappear {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 1;
-  }
-  51% {
-    opacity: 0.5;
-  }
-  100%{
-  opacity: 0;
   }
 }

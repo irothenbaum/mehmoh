@@ -22,6 +22,11 @@
     }
   }
 
+  &.disabled {
+    cursor: not-allowed;
+    @include elements.shadow1(transparent);
+    background-color: colors.$shadow-25;
+  }
 }
 
 

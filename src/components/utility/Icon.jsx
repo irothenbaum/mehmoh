@@ -11,6 +11,7 @@ import {
   faTimes,
   faChevronUp,
   faChevronDown,
+  faShieldHeart,
 } from '@fortawesome/free-solid-svg-icons'
 import {faCircle} from '@fortawesome/free-regular-svg-icons'
 import {constructClassString} from '../../utilities'
@@ -24,6 +25,7 @@ export const SPINNER = faSpinner
 export const CHECK = faCheck
 export const BULLET = faCircle
 export const CLOSE = faTimes
+export const SHIELD = faShieldHeart
 
 function Icon(props) {
   return (

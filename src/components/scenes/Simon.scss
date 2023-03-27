@@ -1,12 +1,59 @@
 @use "../../styles/elements";
 @use "../../styles/layout";
 @use '../../styles/constants';
+@use '../../styles/typography';
+@use '../../styles/colors';
 
 .simon-game {
   @include elements.pageContainer();
   height: 100%;
   width: 100%;
   padding: layout.$spaceNormal;
+
+  .header-container {
+    position: absolute;
+    top: layout.$spaceExtraLarge;
+    left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 layout.$spaceExtraLarge;
+    transition: filter constants.$transition;
+    filter: drop-shadow(0 0 0px transparent);
+
+    .shield-icon, .shield-icon-clip {
+      display: block;
+      position: absolute;
+      right: 0;
+      font-size: typography.$fontSize3;
+      color: colors.$shadow-25;
+
+      &.is-on-fire {
+        color: colors.$activeColorBright;
+        filter: drop-shadow(0 0 15px colors.$activeColor-50) drop-shadow(0 0 2px colors.$activeColor);
+      }
+
+      &.shield-icon-clip {
+        color: transparent;
+        transition: clip-path constants.$transition;
+
+        &.streak-0 {
+          clip-path: polygon(100% 100%, 100% 100%, 100% 100%, 0% 100%)
+        }
+
+        &.streak-1 {
+          color: colors.$white;
+          clip-path: polygon(0% 66%, 100% 66%, 100% 100%, 0% 100%)
+        }
+
+        &.streak-2 {
+          color: colors.$white;
+          clip-path: polygon(0% 33%, 100% 33%, 100% 100%, 0% 100%)
+        }
+      }
+
+    }
+  }
 
   .game-container {
     flex: 1;

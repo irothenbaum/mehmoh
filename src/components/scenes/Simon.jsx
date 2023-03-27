@@ -20,9 +20,15 @@ import useHighScore from '../../hooks/useHighScore'
 import {SCENE_SIMON} from '../../constants/routes'
 import PropTypes from 'prop-types'
 import GameOverResult from '../GameOverResult'
+import Icon, {SHIELD} from '../utility/Icon'
+import ShieldEffect from '../ShieldEffect'
 
 // first 3 correct (offset=-1,0,1) answers are always worth 1, then you can get on fire
 const FIRE_OFFSET = 1
+
+function isStreakOnFire(streak) {
+  return streak > 2
+}
 
 function Simon(props) {
   const {recordScore, getHighScore} = useHighScore()
@@ -43,9 +49,10 @@ function Simon(props) {
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
   const longestStreak = useRef(0)
-  const isOnFire = streak > 2
+  const isOnFire = isStreakOnFire(streak)
   const [isGameOver, setIsGameOver] = useState(false)
   const [pointValuesArr, setPointValuesArr] = useState([])
+  const [disabledVertex, setDisabledVertex] = useState(null)
 
   // the first FIRE_OFFSET answers are worth 1, then subsequent correct answers are worth +1..Vertex Count
   const pointValue = Math.min(Math.max(1, streak - FIRE_OFFSET), vertexCount)
@@ -115,6 +122,7 @@ function Simon(props) {
     }
 
     if (correctPath[guessCount] === vertNum) {
+      setDisabledVertex(null)
       setActiveVertex(vertNum)
       setTimer(
         CLICK_FEEDBACK_TIMER,
@@ -131,6 +139,7 @@ function Simon(props) {
     } else {
       if (isOnFire) {
         setStreak(0)
+        setDisabledVertex(vertNum)
       } else {
         // if you get one wrong not on fire, this will be game over?
         setIsGameOver(true)
@@ -160,12 +169,31 @@ function Simon(props) {
           difficulty={vertexCount}
         />
       )}
-      <Score
-        score={score}
-        isHighScore={
-          score > 0 && getHighScore(SCENE_SIMON, vertexCount) <= score
-        }
-      />
+      <div className="header-container">
+        <Score
+          score={score}
+          isHighScore={
+            score > 0 && getHighScore(SCENE_SIMON, vertexCount) <= score
+          }
+        />
+        <Icon
+          icon={SHIELD}
+          className={constructClassString(
+            {'is-on-fire': isOnFire},
+            'shield-icon',
+          )}
+        />
+        <Icon
+          icon={SHIELD}
+          className={constructClassString(
+            null,
+            `streak-${streak}`,
+            'shield-icon-clip',
+          )}
+        />
+      </div>
+
+      <ShieldEffect isActive={isOnFire} />
       <div className="game-container">
         <VertexPolygon
           isCollapsed={animatingRound}
@@ -173,6 +201,7 @@ function Simon(props) {
           count={vertexCount}
           onContactStart={handleVertexTouch}
           activeVertex={activeVertex}
+          disabledVertex={disabledVertex}
         />
       </div>
       <RoundTracker

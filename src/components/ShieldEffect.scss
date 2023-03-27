@@ -1,0 +1,64 @@
+@use '../styles/colors';
+@use '../styles/elements';
+@use '../styles/constants';
+@use '../styles/layout';
+@use 'sass:math';
+
+$animationTime: 0.3s;
+
+.shield-effect-container {
+  @include elements.full-page(absolute);
+
+  .shimmer-effect {
+    @include elements.full-page(fixed);
+    visibility: hidden;
+    transform: translateY(-50%);
+
+    &:before {
+      content: '';
+      display: block;
+      height: 15%;
+      background-color: colors.$white;
+    }
+    &:after {
+      content: '';
+      display: block;
+      height: 5%;
+      margin-top: 8%;
+      background-color: colors.$white;
+    }
+  }
+
+  &.active {
+    box-shadow: inset 0 0 5px 2px colors.$activeColorBright, inset 0 0 50px 0 colors.$activeColor-50;
+
+    .shimmer-effect {
+      z-index: 10;
+      animation: shimmer $animationTime linear forwards;
+    }
+  }
+
+  &.cracked {
+    &:after {
+      position: absolute;
+      z-index: 10;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      animation: disappear 0.5s linear forwards;
+      background-color: colors.$secondaryColor;
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    visibility: visible;
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(150%);
+  }
+}

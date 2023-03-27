@@ -12,7 +12,11 @@ function Vertex(props) {
   return (
     <div
       className={constructClassString(
-        {active: props.isActive, secondary: props.isSecondary},
+        {
+          active: props.isActive,
+          secondary: props.isSecondary,
+          disabled: props.isDisabled,
+        },
         'vertex',
         props.className,
       )}
@@ -24,6 +28,7 @@ function Vertex(props) {
 
 Vertex.propTypes = {
   isActive: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   isSecondary: PropTypes.bool,
   onContactStart: PropTypes.func,
   onContactEnd: PropTypes.func,
