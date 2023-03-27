@@ -1,0 +1,25 @@
+@use '../styles/typography';
+@use '../styles/colors';
+@use '../styles/constants';
+
+h1.title {
+  text-align: left;
+  font-size: typography.$fontSize1;
+  font-family: typography.$fontFamilyLight;
+
+  span {
+    color: colors.$copyColor;
+  }
+
+  span.active {
+    transition: color constants.$transition;
+    transition-delay: 0.5s;
+    color: colors.$activeColor;
+  }
+
+  span.secondary {
+    transition: color constants.$transition;
+    transition-delay: 0.5s;
+    color: colors.$secondaryColor;
+  }
+}

@@ -17,7 +17,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 layout.$spaceExtraLarge;
+    padding: 0 typography.$fontSize1;
     transition: filter constants.$transition;
     filter: drop-shadow(0 0 0px transparent);
 
@@ -25,7 +25,7 @@
       display: block;
       position: absolute;
       right: 0;
-      font-size: typography.$fontSize3;
+      font-size: typography.$fontSize2;
       color: colors.$shadow-25;
 
       &.is-on-fire {

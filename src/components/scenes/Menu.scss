@@ -17,18 +17,13 @@ $navigatingTransition: 0.5s ease-out;
   justify-content: space-between;
   padding: layout.$spaceExtraLarge layout.$spaceNormal;
 
-  h1 {
-    text-align: left;
-    font-size: typography.$fontSize1;
-    font-family: typography.$fontFamilyLight;
+  .controls-container {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
 
-    span.active {
-      color: colors.$activeColor;
-    }
-
-    span.secondary {
-      color: colors.$secondaryColor;
-    }
+     &.ready {
+       opacity: 1;
+     }
   }
 
   .menu-vertex-wrapper {
