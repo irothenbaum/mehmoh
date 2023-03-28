@@ -17,15 +17,6 @@
     h1 {
       font-size: typography.$fontSize2;
     }
-
-    h3 {
-      font-size: typography.$fontSize4;
-      margin-bottom: layout.$spaceSmall;
-
-      span {
-        font-size: typography.$fontSize3;
-      }
-    }
   }
 
 
@@ -40,9 +31,30 @@
     justify-content: center;
     flex-grow: 1;
     height: 100%;
+    text-align: center;
+    margin-bottom: layout.$spaceNormal;
+
+    h3 {
+      font-size: typography.$fontSize4;
+    }
+
+    p {
+    }
+
+    .score-container-inner {
+      position: relative;
+      .fire-effect-container {
+        font-size: 6em;
+        opacity: 0.2;
+        position: absolute;
+        bottom: 0.8em;
+        left: calc(50% - 0.5em)
+      }
+    }
+
     .score {
+      margin: layout.$spaceExtraSmall 0;
       display: block;
-      margin-bottom: layout.$spaceNormal;
     }
   }
 
@@ -57,6 +69,28 @@
       display: block;
       margin: 0 auto;
     }
+  }
 
+  .score-unit {
+    margin-top: layout.$spaceSmall;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span:first-child {
+      font-size: typography.$fontSize4;
+      margin-bottom: layout.$spaceSmall;
+
+    }
+    span:last-child {
+      font-size: typography.$fontSize3;
+    }
+
+    &.ticking {
+      span:last-child {
+        color: colors.$activeColor;
+      }
+
+    }
   }
 }

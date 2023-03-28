@@ -1,0 +1,52 @@
+@use "../styles/colors";
+@use "../styles/typography";
+
+.fire-effect-container {
+  font-size: typography.$fontSize2;
+  position: relative;
+
+  .flame {
+    position: absolute;
+    left: 0;
+    width: 100%;
+
+    svg {
+      animation: flame-out 1s linear infinite;
+    }
+
+    &:nth-child(2) svg {
+      animation-delay: 0.25s;
+    }
+    &:nth-child(3) svg {
+      animation-delay: 0.5s;
+    }
+    &:nth-child(4) svg {
+      animation-delay: 0.75s;
+    }
+  }
+}
+
+@keyframes flame-out {
+  0% {
+    color: colors.$activeColorBright;
+    transform: scale(1) translateY(0);
+    transform-origin: 0 100%;
+    opacity: 1;
+  }
+
+  25% {
+
+  }
+
+  50% {
+    color: colors.$activeColor;
+    opacity: 1;
+  }
+
+  100% {
+    color: colors.$activeColor;
+    transform: scale(3) translateY(-30%);
+    opacity: 0;
+  }
+
+}

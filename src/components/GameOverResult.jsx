@@ -1,16 +1,50 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import './GameOverResult.scss'
 import RoundTracker from './RoundTracker'
 import PropTypes from 'prop-types'
 import Score from './Score'
 import useDoOnceTimer from '../hooks/useDoOnceTimer'
 import useContact from '../hooks/useContact'
+import useHighScore from '../hooks/useHighScore'
 import {SCENE_SIMON} from '../constants/routes'
+import {constructClassString} from '../utilities'
+import useTicker from '../hooks/useTicker'
+import FireEffect from './FireEffect'
 
 const FINAL_SCORE_REVEAL = 'final-score-reveal'
 const FINAL_SCORE_REVEAL_TIMEOUT = 3000
 
+function ScoreUnit(props) {
+  const [v, setV] = useState(props.delay > 0 ? 0 : props.value)
+  const {value, ticking} = useTicker(v)
+  const {setTimer} = useDoOnceTimer()
+
+  useEffect(() => {
+    setTimer(
+      'timer',
+      () => {
+        setV(props.value)
+      },
+      props.delay,
+    )
+  }, [])
+
+  return (
+    <div className={constructClassString({ticking: !!ticking}, 'score-unit')}>
+      <span>{props.label}</span> <span>{value}</span>
+    </div>
+  )
+}
+ScoreUnit.propTypes = {
+  delay: PropTypes.number,
+  label: PropTypes.string,
+  value: PropTypes.number,
+}
+
 function GameOverResult(props) {
+  const {recordScore, getHighScore} = useHighScore()
+  const prevBest = useRef(getHighScore(SCENE_SIMON, props.difficulty))
+  const [value, setValue] = useState(0)
   const [score, setScore] = useState(0)
   const {setTimer} = useDoOnceTimer()
   const {contactProps} = useContact({
@@ -18,7 +52,9 @@ function GameOverResult(props) {
   })
 
   useEffect(() => {
-    const finalScore = props.score + props.longestStreak * props.difficulty
+    const finalScore =
+      props.score + props.longestStreak + props.answerValues.length
+    recordScore(SCENE_SIMON, props.difficulty, finalScore)
     setTimer(
       FINAL_SCORE_REVEAL,
       () => setScore(finalScore),
@@ -31,6 +67,7 @@ function GameOverResult(props) {
       <div className="game-over-section">
         <h1>Game Over</h1>
       </div>
+      {/*TODO: we want the top row of roundTracker to also be collapsed, not sure how yet*/}
       <RoundTracker
         initialShowing={props.answerValues.length}
         isRevealing={false}
@@ -41,19 +78,28 @@ function GameOverResult(props) {
         maxPointValue={props.difficulty}
       />
       <div className="game-over-section">
-        <h3>
-          Score: <span>{props.score}</span>
-        </h3>
-        <h3>
-          Answered Correct: <span>{props.answerValues.length}</span>
-        </h3>
-        <h3>
-          Longest streak: <span>{props.longestStreak}</span>
-        </h3>
+        <ScoreUnit value={props.score} label="Score" delay={0} />
+        <ScoreUnit
+          value={props.answerValues.length}
+          label="Answered correct"
+          delay={1000}
+        />
+        <ScoreUnit
+          value={props.longestStreak}
+          label="Longest streak"
+          delay={1000}
+        />
       </div>
 
       <div className="score-container">
-        <Score score={score} />
+        <div>
+          <h3>TOTAL</h3>
+          <div className="score-container-inner">
+            <Score onTick={v => setValue(v)} score={score} />
+            {value >= prevBest.current && <FireEffect />}
+          </div>
+          <p>prev best: {getHighScore(SCENE_SIMON, props.difficulty)}</p>
+        </div>
       </div>
 
       <div className="back-button">

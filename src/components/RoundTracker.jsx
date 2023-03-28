@@ -28,7 +28,7 @@ function RoundTracker(props) {
       return
     }
 
-    if (props.isRevealing) {
+    if (props.isRevealing && showing !== props.initialShowing) {
       setShowing(0)
     }
   }, [props.isRevealing])
@@ -49,12 +49,14 @@ function RoundTracker(props) {
       // then wait the reveal timeout before recursively invoking revealNext
       setTimer(
         REVEAL_TIMER,
-        () => setShowing(p => p + 1),
-        Math.min(
-          REVEAL_TIMEOUT,
-          // after we get through one line, the speed will start to pick up
-          (REVEAL_TIMEOUT * blocksPerLine) / props.total,
-        ),
+        () => setShowing(showing + 1),
+        typeof props.revealTimeout === 'number'
+          ? props.revealTimeout
+          : Math.min(
+              REVEAL_TIMEOUT,
+              // after we get through one line, the speed will start to pick up
+              (REVEAL_TIMEOUT * blocksPerLine) / props.total,
+            ),
       )
     }
   }, [showing])
@@ -217,6 +219,7 @@ RoundTracker.propTypes = {
     PropTypes.arrayOf(PropTypes.number),
   ]),
   maxPointValue: PropTypes.number,
+  revealTimeout: PropTypes.number,
 }
 
 export default RoundTracker

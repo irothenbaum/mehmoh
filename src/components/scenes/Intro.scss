@@ -1,0 +1,16 @@
+@use "../../styles/elements";
+@use "../../styles/colors";
+@use "../../styles/layout";
+
+.intro-container {
+  @include elements.pageContainer();
+  padding: layout.$spaceNormal;
+  height: 100%;
+  width: 100%;
+
+  .round-tracker.pseudo {
+    .revealed .point-block {
+      background-color: colors.$shadow-25 !important;
+    }
+  }
+}

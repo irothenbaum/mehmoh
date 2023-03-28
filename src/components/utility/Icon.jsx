@@ -12,6 +12,7 @@ import {
   faChevronUp,
   faChevronDown,
   faShieldHeart,
+  faFireFlameCurved,
 } from '@fortawesome/free-solid-svg-icons'
 import {faCircle} from '@fortawesome/free-regular-svg-icons'
 import {constructClassString} from '../../utilities'
@@ -26,10 +27,12 @@ export const CHECK = faCheck
 export const BULLET = faCircle
 export const CLOSE = faTimes
 export const SHIELD = faShieldHeart
+export const FIRE = faFireFlameCurved
 
 function Icon(props) {
   return (
     <span
+      style={props.style}
       className={constructClassString(
         {
           'has-click-handler': typeof props.onClick === 'function',

@@ -31,7 +31,7 @@ function isStreakOnFire(streak) {
 }
 
 function Simon(props) {
-  const {recordScore, getHighScore} = useHighScore()
+  const {getHighScore} = useHighScore()
   const {vertexCount} = useContext(SettingsContext)
   const [animatingRound, setAnimatingRound] = useState(true)
   const {array: correctPath, append: appendCorrectStep} = useArray([])
@@ -75,10 +75,8 @@ function Simon(props) {
         setAnimatingRound(false)
         setIsRevealing(true)
         appendCorrectStep(nextVert)
-        setPointValuesArr(arr => {
-          allPointValues.current = allPointValues.current.concat(arr)
-          return []
-        })
+        allPointValues.current = allPointValues.current.concat(pointValuesArr)
+        setPointValuesArr([])
       },
       INTER_ROUND_DURATION,
     )
@@ -143,8 +141,10 @@ function Simon(props) {
         setStreak(0)
         setDisabledVertex(vertNum)
       } else {
-        // store progress from mid round
-        allPointValues.current = allPointValues.current.concat(pointValuesArr)
+        // store progress from mid round (we do length - 1 because they wouldn't have gotten the last one correct and so shouldn't award its value
+        allPointValues.current = allPointValues.current.concat(
+          pointValuesArr.slice(0, pointValuesArr.length - 1),
+        )
         // if you get one wrong not on fire, this will be game over?
         setIsGameOver(true)
       }
@@ -154,10 +154,6 @@ function Simon(props) {
   useEffect(() => {
     longestStreak.current = Math.max(longestStreak.current, streak)
   }, [streak])
-
-  useEffect(() => {
-    recordScore(SCENE_SIMON, vertexCount, score)
-  }, [score])
 
   const handleReturn = () => {
     props.onNavigate(SCENE_MENU)
@@ -172,10 +168,10 @@ function Simon(props) {
       {isGameOver && (
         <GameOverResult
           answerValues={allPointValues.current}
-          longestStreak={longestStreak.current}
-          score={score}
+          longestStreak={longestStreak.current || 30}
+          score={score || 350}
           difficulty={vertexCount}
-          onDone={() => handleReturn}
+          onDone={handleReturn}
         />
       )}
       <div className="header-container">
