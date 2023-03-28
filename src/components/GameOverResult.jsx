@@ -43,7 +43,7 @@ ScoreUnit.propTypes = {
 
 function GameOverResult(props) {
   const {recordScore, getHighScore} = useHighScore()
-  const prevBest = useRef(getHighScore(SCENE_SIMON, props.difficulty))
+  const prevBest = useRef()
   const [value, setValue] = useState(0)
   const [score, setScore] = useState(0)
   const {setTimer} = useDoOnceTimer()
@@ -52,6 +52,7 @@ function GameOverResult(props) {
   })
 
   useEffect(() => {
+    prevBest.current = getHighScore(SCENE_SIMON, props.difficulty)
     const finalScore =
       props.score + props.longestStreak + props.answerValues.length
     recordScore(SCENE_SIMON, props.difficulty, finalScore)
@@ -68,15 +69,17 @@ function GameOverResult(props) {
         <h1>Game Over</h1>
       </div>
       {/*TODO: we want the top row of roundTracker to also be collapsed, not sure how yet*/}
-      <RoundTracker
-        initialShowing={props.answerValues.length}
-        isRevealing={false}
-        total={props.answerValues.length}
-        completed={props.answerValues.length}
-        pointValue={props.answerValues}
-        onShowNext={() => {}}
-        maxPointValue={props.difficulty}
-      />
+      <div className="round-tracker-container">
+        <RoundTracker
+          initialShowing={props.answerValues.length}
+          isRevealing={false}
+          total={props.answerValues.length}
+          completed={props.answerValues.length}
+          pointValue={props.answerValues}
+          onShowNext={() => {}}
+          maxPointValue={props.difficulty}
+        />
+      </div>
       <div className="game-over-section">
         <ScoreUnit value={props.score} label="Score" delay={0} />
         <ScoreUnit
@@ -96,7 +99,7 @@ function GameOverResult(props) {
           <h3>TOTAL</h3>
           <div className="score-container-inner">
             <Score onTick={v => setValue(v)} score={score} />
-            {value >= prevBest.current && <FireEffect />}
+            <FireEffect isActive={value && value > prevBest.current} />
           </div>
           <p>prev best: {getHighScore(SCENE_SIMON, props.difficulty)}</p>
         </div>

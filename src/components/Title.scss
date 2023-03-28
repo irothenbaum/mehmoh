@@ -9,6 +9,13 @@ h1.title {
 
   span {
     color: colors.$copyColor;
+    opacity: 0;
+    transition: opacity constants.$transition;
+  }
+
+  span.visible {
+    opacity: 1;
+
   }
 
   span.active {

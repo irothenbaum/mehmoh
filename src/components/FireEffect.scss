@@ -1,16 +1,42 @@
 @use "../styles/colors";
 @use "../styles/typography";
+@use "../styles/constants";
+
+$explosionRadius: 4em;
+$explosionDiameter: 8em;
 
 .fire-effect-container {
+  opacity: 0;
   font-size: typography.$fontSize2;
   position: relative;
 
+  &:before {
+    content: '';
+    display: none;
+    position: absolute;
+    height: 0;
+    width: 0;
+    border-radius: 50%;
+    z-index: 10;
+  }
+
+  &.active {
+    opacity: 1;
+
+    &:before {
+      display: block;
+      animation: explode 0.7s ease-out;
+      z-index: 10;
+    }
+  }
+
   .flame {
     position: absolute;
-    left: 0;
+    left: -0.5em;
     width: 100%;
 
     svg {
+      opacity: 0;
       animation: flame-out 1s linear infinite;
     }
 
@@ -31,16 +57,15 @@
     color: colors.$activeColorBright;
     transform: scale(1) translateY(0);
     transform-origin: 0 100%;
-    opacity: 1;
+    opacity: 0;
   }
 
-  25% {
-
+  20% {
+    opacity: 1;
   }
 
   50% {
     color: colors.$activeColor;
-    opacity: 1;
   }
 
   100% {
@@ -49,4 +74,25 @@
     opacity: 0;
   }
 
+}
+
+@keyframes explode {
+  0% {
+    width: 1em;
+    height: 1em;
+    left: -0.5em;
+    bottom: -0.5em;
+    background: radial-gradient(circle at center, transparent 25%, colors.$white 25.5%);
+    background-size: 100% 100%;
+    background-position: center center;
+  }
+
+  100% {
+    width: $explosionDiameter;
+    height: $explosionDiameter;
+    left: -$explosionRadius;
+    bottom: -$explosionRadius;
+    background-size: 500% 500%;
+    background-position: center center;
+  }
 }

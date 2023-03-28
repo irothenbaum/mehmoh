@@ -19,7 +19,7 @@ function Menu(props) {
   const {vertexCount} = useContext(SettingsContext)
   const [isReady, setIsReady] = useState(false)
   const [isNavigating, setIsNavigating] = useState(false)
-  const {getHighScore} = useHighScore()
+  const {getHighScore, clearHighScore} = useHighScore()
   const {setTimer} = useDoOnceTimer()
   const {contactProps} = useContact({
     onPress: () => {
@@ -31,6 +31,13 @@ function Menu(props) {
       )
     },
   })
+
+  /*
+  // to clear the high scores
+  useEffect(() => {
+    clearHighScore(SCENE_SIMON, vertexCount)
+  }, [vertexCount])
+  */
 
   useEffect(() => {
     setTimer(INTRO_TIMER, () => setIsReady(true), INTRO_DURATION)

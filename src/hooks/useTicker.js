@@ -10,7 +10,6 @@ const TIME_TIMEOUT = 300
  * @param {number?} startingValue
  */
 function useTicker(startingValue = 0) {
-  console.log('Render', startingValue)
   const {setTimer, cancelTimer, cancelAllTimers} = useDoOnceTimer()
   const {value, increment, decrement} = useIncrement(startingValue)
   const [ticking, setTicking] = useState(0)
@@ -46,7 +45,6 @@ function useTicker(startingValue = 0) {
       }
 
       const tickAmount = Math.max(1, Math.round(Math.abs(ticks) / 20))
-      console.log(ticks, tickAmount)
 
       if (ticks < 0) {
         ticks += tickAmount

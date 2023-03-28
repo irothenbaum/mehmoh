@@ -20,20 +20,19 @@ function Title(props) {
 
   return (
     <h1 className="title">
-      {elems
-        .filter((e, i) => i < value)
-        .map((e, i) => {
-          return (
-            <span
-              key={i}
-              className={constructClassString({
-                active: e === 'e' && value > 6,
-                secondary: e === 'o' && value > 6,
-              })}>
-              {e}
-            </span>
-          )
-        })}
+      {elems.map((e, i) => {
+        return (
+          <span
+            key={i}
+            className={constructClassString({
+              visible: i < value,
+              active: e === 'e' && value > 6,
+              secondary: e === 'o' && value > 6,
+            })}>
+            {e}
+          </span>
+        )
+      })}
     </h1>
   )
 }

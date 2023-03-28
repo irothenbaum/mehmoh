@@ -25,7 +25,7 @@ const SCENE_MAP = {
 function Mehmoh(props) {
   const [settings, setSettings] = useState(HydratedSettings)
   const container = useRef()
-  const [scene, setScene] = useState(SCENE_SIMON)
+  const [scene, setScene] = useState(SCENE_MENU)
 
   const Page = SCENE_MAP[scene]
 

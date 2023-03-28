@@ -48,7 +48,7 @@ function Simon(props) {
   const [streak, setStreak] = useState(0)
   const longestStreak = useRef(0)
   const isOnFire = isStreakOnFire(streak)
-  const [isGameOver, setIsGameOver] = useState(true)
+  const [isGameOver, setIsGameOver] = useState(false)
   const [pointValuesArr, setPointValuesArr] = useState([])
   const [disabledVertex, setDisabledVertex] = useState(null)
   const allPointValues = useRef([])
@@ -141,9 +141,9 @@ function Simon(props) {
         setStreak(0)
         setDisabledVertex(vertNum)
       } else {
-        // store progress from mid round (we do length - 1 because they wouldn't have gotten the last one correct and so shouldn't award its value
+        // store progress from mid round
         allPointValues.current = allPointValues.current.concat(
-          pointValuesArr.slice(0, pointValuesArr.length - 1),
+          pointValuesArr.slice(0, pointValuesArr.length),
         )
         // if you get one wrong not on fire, this will be game over?
         setIsGameOver(true)
@@ -168,8 +168,8 @@ function Simon(props) {
       {isGameOver && (
         <GameOverResult
           answerValues={allPointValues.current}
-          longestStreak={longestStreak.current || 30}
-          score={score || 350}
+          longestStreak={longestStreak.current}
+          score={score}
           difficulty={vertexCount}
           onDone={handleReturn}
         />

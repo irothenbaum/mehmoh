@@ -39,9 +39,24 @@ function useHighScore() {
     return highScores[scoreKey] || 0
   }
 
+  /**
+   * @param {string} game
+   * @param {number} vertexCount
+   */
+  const clearHighScore = (game, vertexCount) => {
+    const scoreKey = getScoreKey(game, vertexCount)
+    updateSettings({
+      highScores: {
+        ...highScores,
+        [scoreKey]: 0,
+      },
+    })
+  }
+
   return {
     recordScore,
     getHighScore,
+    clearHighScore,
   }
 }
 
