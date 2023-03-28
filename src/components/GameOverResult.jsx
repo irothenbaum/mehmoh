@@ -43,7 +43,7 @@ ScoreUnit.propTypes = {
 
 function GameOverResult(props) {
   const {recordScore, getHighScore} = useHighScore()
-  const prevBest = useRef()
+  const prevBest = useRef(getHighScore(SCENE_SIMON, props.difficulty))
   const [value, setValue] = useState(0)
   const [score, setScore] = useState(0)
   const {setTimer} = useDoOnceTimer()
@@ -52,7 +52,6 @@ function GameOverResult(props) {
   })
 
   useEffect(() => {
-    prevBest.current = getHighScore(SCENE_SIMON, props.difficulty)
     const finalScore =
       props.score + props.longestStreak + props.answerValues.length
     recordScore(SCENE_SIMON, props.difficulty, finalScore)
@@ -101,7 +100,7 @@ function GameOverResult(props) {
             <Score onTick={v => setValue(v)} score={score} />
             <FireEffect isActive={value && value > prevBest.current} />
           </div>
-          <p>prev best: {getHighScore(SCENE_SIMON, props.difficulty)}</p>
+          <p>prev best: {prevBest.current}</p>
         </div>
       </div>
 
