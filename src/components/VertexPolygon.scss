@@ -95,6 +95,8 @@ $opposite25: calc(75% - var(--vertex-radius));
      height: $collapsedDimension;
      width: $collapsedDimension;
      box-shadow: none;
+
+     &:after, &:before {opacity: 0;}
    }
   }
 }

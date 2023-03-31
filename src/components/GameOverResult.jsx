@@ -98,7 +98,7 @@ function GameOverResult(props) {
           <h3>TOTAL</h3>
           <div className="score-container-inner">
             <Score onTick={v => setValue(v)} score={score} />
-            <FireEffect isActive={value && value > prevBest.current} />
+            <FireEffect isActive={value > prevBest.current} />
           </div>
           <p>prev best: {prevBest.current}</p>
         </div>
