@@ -5,16 +5,8 @@ import Vertex from './utility/Vertex'
 import {constructClassString} from '../utilities'
 
 function VertexPolygon(props) {
-  const handleContactStart = i => {
-    return typeof props.onContactStart === 'function'
-      ? props.onContactStart(i)
-      : undefined
-  }
-
-  const handleContactEnd = i => {
-    return typeof props.onContactEnd === 'function'
-      ? props.onContactEnd(i)
-      : undefined
+  const handlePress = i => {
+    return typeof props.onPress === 'function' ? props.onPress(i) : undefined
   }
 
   return (
@@ -35,8 +27,7 @@ function VertexPolygon(props) {
             isActive={i === props.activeVertex}
             isDisabled={i === props.disabledVertex}
             isSecondary={props.isSecondary}
-            onContactStart={() => handleContactStart(i)}
-            onContactEnd={() => handleContactEnd(i)}
+            onPress={() => handlePress(i)}
           />
         ))}
       </div>
@@ -51,8 +42,7 @@ VertexPolygon.propTypes = {
   isSecondary: PropTypes.bool,
   isCollapsed: PropTypes.bool,
   className: PropTypes.string,
-  onContactStart: PropTypes.func,
-  onContactEnd: PropTypes.func,
+  onPress: PropTypes.func,
 }
 
 export default VertexPolygon

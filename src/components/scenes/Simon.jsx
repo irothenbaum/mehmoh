@@ -204,7 +204,7 @@ function Simon(props) {
           isCollapsed={animatingRound}
           isSecondary={isRevealing}
           count={vertexCount}
-          onContactStart={handleVertexTouch}
+          onPress={handleVertexTouch}
           activeVertex={activeVertex}
           disabledVertex={disabledVertex}
         />

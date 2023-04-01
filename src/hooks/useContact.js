@@ -4,8 +4,8 @@ import {getRandomString} from '../utilities'
 
 /**
  * @typedef onContactConstructor
- * @property {function?} onContactStart
- * @property {function?} onContactEnd
+ * @property {function?} onContactStart // these contact ones don't work right on iOS
+ * @property {function?} onContactEnd // these contact ones don't work right on iOS
  * @property {function?} onPress
  */
 
@@ -32,6 +32,7 @@ function useContact(onContact) {
   const recentTouches = useRef({})
 
   /**
+   * TODO: Doesn't work on iOS? Not sure why...
    * @param element
    * @param eventType
    * @param callback

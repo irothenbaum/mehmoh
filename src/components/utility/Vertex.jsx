@@ -6,8 +6,7 @@ import {constructClassString} from '../../utilities'
 
 function Vertex(props) {
   const {contactProps} = useContact({
-    onContactStart: props.onContactStart,
-    onContactEnd: props.onContactEnd,
+    onPress: props.onPress,
   })
   return (
     <div
@@ -30,8 +29,7 @@ Vertex.propTypes = {
   isActive: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isSecondary: PropTypes.bool,
-  onContactStart: PropTypes.func,
-  onContactEnd: PropTypes.func,
+  onPress: PropTypes.func,
   className: PropTypes.string,
 }
 
