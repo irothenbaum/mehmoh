@@ -20,11 +20,11 @@ function useHighScore() {
    */
   const recordScore = (game, vertexCount, score) => {
     const scoreKey = getScoreKey(game, vertexCount)
-    const currentHighScore = highScores[scoreKey]
+    const currentHighScore = highScores[scoreKey] || 0
     updateSettings({
       highScores: {
         ...highScores,
-        [scoreKey]: Math.max(currentHighScore, score),
+        [scoreKey]: Math.max(score, currentHighScore),
       },
     })
   }

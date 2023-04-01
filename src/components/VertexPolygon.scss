@@ -2,6 +2,7 @@
 @use '../styles/constants';
 @use '../styles/colors';
 @use '../styles/layout';
+@use 'sass:math';
 
 $collapsedDimension: layout.$spaceNormal;
 
@@ -90,8 +91,8 @@ $opposite25: calc(75% - var(--vertex-radius));
 
     // all go to center when collapsed
    .vertex {
-     top: calc(50% - #{$collapsedDimension / 2 });
-     left: calc(50% - #{$collapsedDimension / 2 });
+     top: calc(50% - #{math.div($collapsedDimension, 2)});
+     left: calc(50% - #{math.div($collapsedDimension, 2)});
      height: $collapsedDimension;
      width: $collapsedDimension;
      box-shadow: none;
